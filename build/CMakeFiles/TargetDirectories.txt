@@ -1,0 +1,4 @@
+/home/kathy/Documents/Vulkan_Proyects/CMAKE_VULKAN_AND_PITCHFORK TESTING/build/CMakeFiles/First_App.dir
+/home/kathy/Documents/Vulkan_Proyects/CMAKE_VULKAN_AND_PITCHFORK TESTING/build/CMakeFiles/Shaders.dir
+/home/kathy/Documents/Vulkan_Proyects/CMAKE_VULKAN_AND_PITCHFORK TESTING/build/CMakeFiles/edit_cache.dir
+/home/kathy/Documents/Vulkan_Proyects/CMAKE_VULKAN_AND_PITCHFORK TESTING/build/CMakeFiles/rebuild_cache.dir

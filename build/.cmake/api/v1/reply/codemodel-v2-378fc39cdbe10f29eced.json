@@ -1,0 +1,69 @@
+{
+	"configurations" : 
+	[
+		{
+			"directories" : 
+			[
+				{
+					"build" : ".",
+					"jsonFile" : "directory-.-Debug-f5ebdc15457944623624.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.25.1"
+					},
+					"projectIndex" : 0,
+					"source" : ".",
+					"targetIndexes" : 
+					[
+						0,
+						1
+					]
+				}
+			],
+			"name" : "Debug",
+			"projects" : 
+			[
+				{
+					"directoryIndexes" : 
+					[
+						0
+					],
+					"name" : "First_App",
+					"targetIndexes" : 
+					[
+						0,
+						1
+					]
+				}
+			],
+			"targets" : 
+			[
+				{
+					"directoryIndex" : 0,
+					"id" : "First_App::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-First_App-Debug-992fa965a4d247844887.json",
+					"name" : "First_App",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "Shaders::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-Shaders-Debug-93782a00d782177b25dc.json",
+					"name" : "Shaders",
+					"projectIndex" : 0
+				}
+			]
+		}
+	],
+	"kind" : "codemodel",
+	"paths" : 
+	{
+		"build" : "/home/kathy/Documents/Vulkan_Proyects/CMAKE_VULKAN_AND_PITCHFORK TESTING/build",
+		"source" : "/home/kathy/Documents/Vulkan_Proyects/CMAKE_VULKAN_AND_PITCHFORK TESTING"
+	},
+	"version" : 
+	{
+		"major" : 2,
+		"minor" : 4
+	}
+}
