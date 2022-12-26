@@ -51,7 +51,7 @@ namespace kate{
         shaderStages[0].sType = VK_STRUCTURE_TYPE_PIPELINE_SHADER_STAGE_CREATE_INFO;
         shaderStages[0].stage = VK_SHADER_STAGE_VERTEX_BIT;
         shaderStages[0].module = vertexShaderModule;
-        shaderStages[0].pName = "Main";
+        shaderStages[0].pName = "main";
         shaderStages[0].flags = 0;
         shaderStages[0].pNext = nullptr;
         shaderStages[0].pSpecializationInfo = nullptr;
@@ -60,7 +60,7 @@ namespace kate{
         shaderStages[1].sType = VK_STRUCTURE_TYPE_PIPELINE_SHADER_STAGE_CREATE_INFO;
         shaderStages[1].stage = VK_SHADER_STAGE_FRAGMENT_BIT;
         shaderStages[1].module = fragmentShaderModule;
-        shaderStages[1].pName = "Main";
+        shaderStages[1].pName = "main";
         shaderStages[1].flags = 0;
         shaderStages[1].pNext = nullptr;
         shaderStages[1].pSpecializationInfo = nullptr;
@@ -88,8 +88,8 @@ namespace kate{
         pipelineInfo.pViewportState = &viewportInfo;
         pipelineInfo.pRasterizationState = &pipeline_configuration_info.rasterizationInfo;
         pipelineInfo.pMultisampleState = &pipeline_configuration_info.multisampleInfo;
-
         pipelineInfo.pColorBlendState = &pipeline_configuration_info.colorBlendInfo;
+        pipelineInfo.pDepthStencilState = &pipeline_configuration_info.depthStencilInfo;
         pipelineInfo.pDynamicState = nullptr;
 
         pipelineInfo.layout = pipeline_configuration_info.pipelineLayout;
@@ -102,7 +102,6 @@ namespace kate{
         if(vkCreateGraphicsPipelines(user_Device.device(),VK_NULL_HANDLE,1,&pipelineInfo,nullptr,&graphicsPipeline) != VK_SUCCESS ){
             throw std::runtime_error(" \x1B[31m FATAL ERROR: Failed to create graphics pipeline UnU\033[0m");
         }
-
     }
 
     void KATEPipeline::createShaderModule(const std::vector<char>& code, VkShaderModule* shaderModule){

@@ -4,7 +4,7 @@
 # compile CXX with /usr/bin/clang++
 CXX_DEFINES = 
 
-CXX_INCLUDES = -I"/home/kathy/Documents/Vulkan_Proyects/CMAKE_VULKAN_AND_PITCHFORK TESTING/include" -I"/home/kathy/Documents/Vulkan_Proyects/CMAKE_VULKAN_AND_PITCHFORK TESTING/external" -I"/home/kathy/Documents/Vulkan_Proyects/CMAKE_VULKAN_AND_PITCHFORK TESTING/src" -I"/home/kathy/Documents/Vulkan_Proyects/CMAKE_VULKAN_AND_PITCHFORK TESTING/external/tinyobjloader"
+CXX_INCLUDES = -I/home/kathy/Documents/Vulkan_Proyects/VISUAL_NOVEL_ENGINE/include -I/home/kathy/Documents/Vulkan_Proyects/VISUAL_NOVEL_ENGINE/external -I/home/kathy/Documents/Vulkan_Proyects/VISUAL_NOVEL_ENGINE/src -I/home/kathy/Documents/Vulkan_Proyects/VISUAL_NOVEL_ENGINE/external/tinyobjloader
 
 CXX_FLAGS = -g -std=gnu++17
 

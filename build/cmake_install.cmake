@@ -1,4 +1,4 @@
-# Install script for directory: /home/kathy/Documents/Vulkan_Proyects/CMAKE_VULKAN_AND_PITCHFORK TESTING
+# Install script for directory: /home/kathy/Documents/Vulkan_Proyects/VISUAL_NOVEL_ENGINE
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -50,5 +50,5 @@ endif()
 
 string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
-file(WRITE "/home/kathy/Documents/Vulkan_Proyects/CMAKE_VULKAN_AND_PITCHFORK TESTING/build/${CMAKE_INSTALL_MANIFEST}"
+file(WRITE "/home/kathy/Documents/Vulkan_Proyects/VISUAL_NOVEL_ENGINE/build/${CMAKE_INSTALL_MANIFEST}"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")

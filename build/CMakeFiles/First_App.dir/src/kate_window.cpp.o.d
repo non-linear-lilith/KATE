@@ -1,6 +1,6 @@
 CMakeFiles/First_App.dir/src/kate_window.cpp.o: \
-  /home/kathy/Documents/Vulkan_Proyects/CMAKE_VULKAN_AND_PITCHFORK\ TESTING/src/kate_window.cpp \
-  /home/kathy/Documents/Vulkan_Proyects/CMAKE_VULKAN_AND_PITCHFORK\ TESTING/include/kate_window.hpp \
+  /home/kathy/Documents/Vulkan_Proyects/VISUAL_NOVEL_ENGINE/src/kate_window.cpp \
+  /home/kathy/Documents/Vulkan_Proyects/VISUAL_NOVEL_ENGINE/include/kate_window.hpp \
   /usr/include/GLFW/glfw3.h /usr/lib/clang/14.0.6/include/stddef.h \
   /usr/lib/clang/14.0.6/include/__stddef_max_align_t.h \
   /usr/lib/clang/14.0.6/include/stdint.h /usr/include/stdint.h \

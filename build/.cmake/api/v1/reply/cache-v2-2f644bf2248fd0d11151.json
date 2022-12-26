@@ -55,7 +55,7 @@
 				}
 			],
 			"type" : "INTERNAL",
-			"value" : "/home/kathy/Documents/Vulkan_Proyects/CMAKE_VULKAN_AND_PITCHFORK TESTING/build"
+			"value" : "/home/kathy/Documents/Vulkan_Proyects/VISUAL_NOVEL_ENGINE/build"
 		},
 		{
 			"name" : "CMAKE_CACHE_MAJOR_VERSION",
@@ -559,7 +559,7 @@
 				}
 			],
 			"type" : "STATIC",
-			"value" : "/home/kathy/Documents/Vulkan_Proyects/CMAKE_VULKAN_AND_PITCHFORK TESTING/build/CMakeFiles/pkgRedirects"
+			"value" : "/home/kathy/Documents/Vulkan_Proyects/VISUAL_NOVEL_ENGINE/build/CMakeFiles/pkgRedirects"
 		},
 		{
 			"name" : "CMAKE_GENERATOR",
@@ -619,7 +619,7 @@
 				}
 			],
 			"type" : "INTERNAL",
-			"value" : "/home/kathy/Documents/Vulkan_Proyects/CMAKE_VULKAN_AND_PITCHFORK TESTING"
+			"value" : "/home/kathy/Documents/Vulkan_Proyects/VISUAL_NOVEL_ENGINE"
 		},
 		{
 			"name" : "CMAKE_INSTALL_PREFIX",
@@ -1227,7 +1227,7 @@
 				}
 			],
 			"type" : "STATIC",
-			"value" : "/home/kathy/Documents/Vulkan_Proyects/CMAKE_VULKAN_AND_PITCHFORK TESTING/build"
+			"value" : "/home/kathy/Documents/Vulkan_Proyects/VISUAL_NOVEL_ENGINE/build"
 		},
 		{
 			"name" : "First_App_IS_TOP_LEVEL",
@@ -1251,7 +1251,7 @@
 				}
 			],
 			"type" : "STATIC",
-			"value" : "/home/kathy/Documents/Vulkan_Proyects/CMAKE_VULKAN_AND_PITCHFORK TESTING"
+			"value" : "/home/kathy/Documents/Vulkan_Proyects/VISUAL_NOVEL_ENGINE"
 		},
 		{
 			"name" : "GLSL_VALIDATOR",

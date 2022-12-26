@@ -79,19 +79,19 @@
 			[
 				{
 					"backtrace" : 3,
-					"path" : "/home/kathy/Documents/Vulkan_Proyects/CMAKE_VULKAN_AND_PITCHFORK TESTING/include"
+					"path" : "/home/kathy/Documents/Vulkan_Proyects/VISUAL_NOVEL_ENGINE/include"
 				},
 				{
 					"backtrace" : 4,
-					"path" : "/home/kathy/Documents/Vulkan_Proyects/CMAKE_VULKAN_AND_PITCHFORK TESTING/external"
+					"path" : "/home/kathy/Documents/Vulkan_Proyects/VISUAL_NOVEL_ENGINE/external"
 				},
 				{
 					"backtrace" : 5,
-					"path" : "/home/kathy/Documents/Vulkan_Proyects/CMAKE_VULKAN_AND_PITCHFORK TESTING/src"
+					"path" : "/home/kathy/Documents/Vulkan_Proyects/VISUAL_NOVEL_ENGINE/src"
 				},
 				{
 					"backtrace" : 5,
-					"path" : "/home/kathy/Documents/Vulkan_Proyects/CMAKE_VULKAN_AND_PITCHFORK TESTING/external/tinyobjloader"
+					"path" : "/home/kathy/Documents/Vulkan_Proyects/VISUAL_NOVEL_ENGINE/external/tinyobjloader"
 				}
 			],
 			"language" : "CXX",

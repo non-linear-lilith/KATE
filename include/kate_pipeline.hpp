@@ -7,17 +7,17 @@
 namespace kate{
 
     struct PipelineConfigInfo {
-    VkViewport viewport;
-    VkRect2D scissor;
-    VkPipelineInputAssemblyStateCreateInfo inputAssemblyinfo;
-    VkPipelineRasterizationStateCreateInfo rasterizationInfo;
-    VkPipelineMultisampleStateCreateInfo multisampleInfo;
-    VkPipelineColorBlendAttachmentState colorBlendAttachment;
-    VkPipelineColorBlendStateCreateInfo colorBlendInfo;
-    VkPipelineDepthStencilStateCreateInfo depthStencilInfo;
-    VkPipelineLayout pipelineLayout = nullptr;
-    VkRenderPass renderPass = nullptr;
-    uint32_t subpass = 0;
+        VkViewport viewport;
+        VkRect2D scissor;
+        VkPipelineInputAssemblyStateCreateInfo inputAssemblyinfo;
+        VkPipelineRasterizationStateCreateInfo rasterizationInfo;
+        VkPipelineMultisampleStateCreateInfo multisampleInfo;
+        VkPipelineColorBlendAttachmentState colorBlendAttachment;
+        VkPipelineColorBlendStateCreateInfo colorBlendInfo;
+        VkPipelineDepthStencilStateCreateInfo depthStencilInfo;
+        VkPipelineLayout pipelineLayout = nullptr;
+        VkRenderPass renderPass = nullptr;
+        uint32_t subpass = 0;
     };
     
     class KATEPipeline // This class is used to make a connection between binaries that are compiled in the gpu and the cpu
@@ -26,8 +26,8 @@ namespace kate{
             KATEPipeline(KATEDevice& device, const std::string& vertexFilePath,const std::string& fragmentFilePath, const PipelineConfigInfo& pipeline_configuration_info); //constructor
             ~KATEPipeline (); //Destructor
             
-            KATEPipeline(const KATEPipeline&)= delete;
-            void operator=(const KATEPipeline&) = delete;
+            KATEPipeline(const KATEPipeline &) = delete;
+            KATEPipeline& operator = (const KATEPipeline&) = delete;
 
             static PipelineConfigInfo defaultPipelineConfigInfo(uint32_t width, uint32_t height);
 
@@ -42,5 +42,6 @@ namespace kate{
             VkPipeline graphicsPipeline;
             VkShaderModule vertexShaderModule;
             VkShaderModule fragmentShaderModule;
+            
     };
 }
