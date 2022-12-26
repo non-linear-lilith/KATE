@@ -198,7 +198,9 @@ CMakeFiles/First_App.dir/src/first_app.cpp.o: /home/kathy/Documents/Vulkan_Proye
   /home/kathy/Documents/Vulkan_Proyects/VISUAL_NOVEL_ENGINE/include/kate_pipeline.hpp \
   /home/kathy/Documents/Vulkan_Proyects/VISUAL_NOVEL_ENGINE/include/kate_device.hpp \
   /home/kathy/Documents/Vulkan_Proyects/VISUAL_NOVEL_ENGINE/include/kate_swap_chain.hpp \
-  /usr/include/c++/12.2.0/stdexcept
+  /usr/include/c++/12.2.0/stdexcept \
+  /usr/include/c++/12.2.0/array \
+  /usr/include/c++/12.2.0/compare
 
 CMakeFiles/First_App.dir/src/kate_device.cpp.o: /home/kathy/Documents/Vulkan_Proyects/VISUAL_NOVEL_ENGINE/src/kate_device.cpp \
   /home/kathy/Documents/Vulkan_Proyects/VISUAL_NOVEL_ENGINE/include/kate_device.hpp \
@@ -1225,8 +1227,6 @@ CMakeFiles/First_App.dir/src/main.cpp.o: /home/kathy/Documents/Vulkan_Proyects/V
 
 /usr/include/c++/12.2.0/limits:
 
-/usr/include/c++/12.2.0/array:
-
 /home/kathy/Documents/Vulkan_Proyects/VISUAL_NOVEL_ENGINE/src/kate_swapp_chain.cpp:
 
 /usr/include/c++/12.2.0/bits/fstream.tcc:
@@ -1288,6 +1288,8 @@ CMakeFiles/First_App.dir/src/main.cpp.o: /home/kathy/Documents/Vulkan_Proyects/V
 /usr/include/strings.h:
 
 /usr/include/string.h:
+
+/usr/include/c++/12.2.0/array:
 
 /usr/include/c++/12.2.0/stdexcept:
 

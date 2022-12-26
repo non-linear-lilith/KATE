@@ -403,7 +403,7 @@ namespace kate {
             return format;
             }
         }
-        throw std::runtime_error("failed to find supported format!");
+        throw std::runtime_error("\x1B[31mFATAL ERROR: Failed to find supported format!\033[0m");
     }
 
     uint32_t KATEDevice::findMemoryType(uint32_t typeFilter, VkMemoryPropertyFlags properties) {
@@ -415,7 +415,7 @@ namespace kate {
             }
         }
  
-        throw std::runtime_error("failed to find suitable memory type!");
+        throw std::runtime_error("\x1B[31mFATAL ERROR: Failed to find suitable memory type!\033[0m");
     }
 
     void KATEDevice::createBuffer(VkDeviceSize size,VkBufferUsageFlags usage,VkMemoryPropertyFlags properties,VkBuffer &buffer,VkDeviceMemory &bufferMemory) {
@@ -426,7 +426,7 @@ namespace kate {
         bufferInfo.sharingMode = VK_SHARING_MODE_EXCLUSIVE;
 
         if (vkCreateBuffer(device_, &bufferInfo, nullptr, &buffer) != VK_SUCCESS) {
-            throw std::runtime_error("failed to create vertex buffer!");
+            throw std::runtime_error("\x1B[31mFATAL ERROR: Failed to create vertex buffer!\033[0m");
         }
 
         VkMemoryRequirements memRequirements;
@@ -438,7 +438,7 @@ namespace kate {
         allocInfo.memoryTypeIndex = findMemoryType(memRequirements.memoryTypeBits, properties);
 
         if (vkAllocateMemory(device_, &allocInfo, nullptr, &bufferMemory) != VK_SUCCESS) {
-            throw std::runtime_error("failed to allocate vertex buffer memory!");
+            throw std::runtime_error("\x1B[31mFATAL ERROR: Failed to allocate vertex buffer memory!\033[0m");
         }
 
         vkBindBufferMemory(device_, buffer, bufferMemory, 0);
@@ -510,7 +510,7 @@ namespace kate {
 
     void KATEDevice::createImageWithInfo(const VkImageCreateInfo &imageInfo,VkMemoryPropertyFlags properties,VkImage &image,VkDeviceMemory &imageMemory) {
         if (vkCreateImage(device_, &imageInfo, nullptr, &image) != VK_SUCCESS) {
-            throw std::runtime_error("failed to create image!");
+            throw std::runtime_error("\x1B[31mFATAL ERROR: failed to create image!\033[0m");
         }
 
         VkMemoryRequirements memRequirements;
@@ -522,11 +522,11 @@ namespace kate {
         allocInfo.memoryTypeIndex = findMemoryType(memRequirements.memoryTypeBits, properties);
 
         if (vkAllocateMemory(device_, &allocInfo, nullptr, &imageMemory) != VK_SUCCESS) {
-            throw std::runtime_error("failed to allocate image memory!");
+            throw std::runtime_error("\x1B[31mFATAL ERROR: Failed to allocate image memory!\033[0m");
         }
 
         if (vkBindImageMemory(device_, image, imageMemory, 0) != VK_SUCCESS) {
-            throw std::runtime_error("failed to bind image memory!");
+            throw std::runtime_error("\x1B[31mFatal Error: failed to bind image memory!\033[0m");
         }
     }
 

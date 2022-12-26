@@ -200,6 +200,8 @@ CMakeFiles/First_App.dir/src/first_app.cpp.o
  /home/kathy/Documents/Vulkan_Proyects/VISUAL_NOVEL_ENGINE/include/kate_device.hpp
  /home/kathy/Documents/Vulkan_Proyects/VISUAL_NOVEL_ENGINE/include/kate_swap_chain.hpp
  /usr/include/c++/12.2.0/stdexcept
+ /usr/include/c++/12.2.0/array
+ /usr/include/c++/12.2.0/compare
 
 CMakeFiles/First_App.dir/src/kate_device.cpp.o
  /home/kathy/Documents/Vulkan_Proyects/VISUAL_NOVEL_ENGINE/src/kate_device.cpp

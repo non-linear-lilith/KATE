@@ -27,13 +27,13 @@ namespace kate{
             void createPipeline();
             void createCommandBuffers();
             void drawFrame();
-
+            
             const std::string AppName = "Visual Novel";
             KATEWindow user_Window{WIDTH,HEIGHT,AppName};
             KATEDevice app_Device{user_Window};
             KATESwapChain appSwapChain{app_Device,user_Window.getExtent()};
             std::unique_ptr<KATEPipeline> appPipeline;
             VkPipelineLayout pipelineLayout;
-            std::vector<VkCommandBuffer> commandBuffer;
+            std::vector<VkCommandBuffer> commandBuffers;
     };
 }

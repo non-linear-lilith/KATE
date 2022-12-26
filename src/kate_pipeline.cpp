@@ -35,6 +35,11 @@ namespace kate{
         return buffer;
     }
 
+    void KATEPipeline::bind(VkCommandBuffer commandBuffer){
+        vkCmdBindPipeline(commandBuffer,VK_PIPELINE_BIND_POINT_GRAPHICS,graphicsPipeline);
+        
+    }
+
     void KATEPipeline::createGraphicPipeline(const std::string& vertex_Filepath, const std::string& fragment_Filepath,const PipelineConfigInfo& pipeline_configuration_info){
         assert(pipeline_configuration_info.pipelineLayout!=VK_NULL_HANDLE && "Cannot create graphics pipeline: no pipelineLayout provided in configInfo UnU.");
         assert(pipeline_configuration_info.renderPass!=VK_NULL_HANDLE && "Cannot create graphics pipeline: no renderPass provided in configInfo UNU.");
