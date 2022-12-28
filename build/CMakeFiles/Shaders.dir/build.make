@@ -53,10 +53,10 @@ RM = /usr/bin/cmake -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/kathy/Documents/Vulkan_Proyects/VISUAL_NOVEL_ENGINE
+CMAKE_SOURCE_DIR = /home/kathy/Documents/Vulkan_Proyects/KATE
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/kathy/Documents/Vulkan_Proyects/VISUAL_NOVEL_ENGINE/build
+CMAKE_BINARY_DIR = /home/kathy/Documents/Vulkan_Proyects/KATE/build
 
 # Utility rule file for Shaders.
 
@@ -69,13 +69,13 @@ include CMakeFiles/Shaders.dir/progress.make
 CMakeFiles/Shaders: shaders/simple_shader.frag.spv
 CMakeFiles/Shaders: shaders/simple_shader.vert.spv
 
-shaders/simple_shader.frag.spv: /home/kathy/Documents/Vulkan_Proyects/VISUAL_NOVEL_ENGINE/data/shaders/simple_shader.frag
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/home/kathy/Documents/Vulkan_Proyects/VISUAL_NOVEL_ENGINE/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Generating shaders/simple_shader.frag.spv"
-	/usr/bin/glslangValidator -V /home/kathy/Documents/Vulkan_Proyects/VISUAL_NOVEL_ENGINE/data/shaders/simple_shader.frag -o /home/kathy/Documents/Vulkan_Proyects/VISUAL_NOVEL_ENGINE/build/shaders/simple_shader.frag.spv
+shaders/simple_shader.frag.spv: /home/kathy/Documents/Vulkan_Proyects/KATE/data/shaders/simple_shader.frag
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/home/kathy/Documents/Vulkan_Proyects/KATE/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Generating shaders/simple_shader.frag.spv"
+	/usr/bin/glslangValidator -V /home/kathy/Documents/Vulkan_Proyects/KATE/data/shaders/simple_shader.frag -o /home/kathy/Documents/Vulkan_Proyects/KATE/build/shaders/simple_shader.frag.spv
 
-shaders/simple_shader.vert.spv: /home/kathy/Documents/Vulkan_Proyects/VISUAL_NOVEL_ENGINE/data/shaders/simple_shader.vert
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/home/kathy/Documents/Vulkan_Proyects/VISUAL_NOVEL_ENGINE/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Generating shaders/simple_shader.vert.spv"
-	/usr/bin/glslangValidator -V /home/kathy/Documents/Vulkan_Proyects/VISUAL_NOVEL_ENGINE/data/shaders/simple_shader.vert -o /home/kathy/Documents/Vulkan_Proyects/VISUAL_NOVEL_ENGINE/build/shaders/simple_shader.vert.spv
+shaders/simple_shader.vert.spv: /home/kathy/Documents/Vulkan_Proyects/KATE/data/shaders/simple_shader.vert
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/home/kathy/Documents/Vulkan_Proyects/KATE/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Generating shaders/simple_shader.vert.spv"
+	/usr/bin/glslangValidator -V /home/kathy/Documents/Vulkan_Proyects/KATE/data/shaders/simple_shader.vert -o /home/kathy/Documents/Vulkan_Proyects/KATE/build/shaders/simple_shader.vert.spv
 
 Shaders: CMakeFiles/Shaders
 Shaders: shaders/simple_shader.frag.spv
@@ -92,6 +92,6 @@ CMakeFiles/Shaders.dir/clean:
 .PHONY : CMakeFiles/Shaders.dir/clean
 
 CMakeFiles/Shaders.dir/depend:
-	cd /home/kathy/Documents/Vulkan_Proyects/VISUAL_NOVEL_ENGINE/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/kathy/Documents/Vulkan_Proyects/VISUAL_NOVEL_ENGINE /home/kathy/Documents/Vulkan_Proyects/VISUAL_NOVEL_ENGINE /home/kathy/Documents/Vulkan_Proyects/VISUAL_NOVEL_ENGINE/build /home/kathy/Documents/Vulkan_Proyects/VISUAL_NOVEL_ENGINE/build /home/kathy/Documents/Vulkan_Proyects/VISUAL_NOVEL_ENGINE/build/CMakeFiles/Shaders.dir/DependInfo.cmake --color=$(COLOR)
+	cd /home/kathy/Documents/Vulkan_Proyects/KATE/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/kathy/Documents/Vulkan_Proyects/KATE /home/kathy/Documents/Vulkan_Proyects/KATE /home/kathy/Documents/Vulkan_Proyects/KATE/build /home/kathy/Documents/Vulkan_Proyects/KATE/build /home/kathy/Documents/Vulkan_Proyects/KATE/build/CMakeFiles/Shaders.dir/DependInfo.cmake --color=$(COLOR)
 .PHONY : CMakeFiles/Shaders.dir/depend
 

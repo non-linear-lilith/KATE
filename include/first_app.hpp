@@ -29,7 +29,7 @@ namespace kate{
             void createCommandBuffers();
             void drawFrame();
             
-            const std::string AppName = "Sierpinski Triangle";
+            const std::string AppName = "KATherine Engine TESTING and DEBUGGING";
             KATEWindow user_Window{WIDTH,HEIGHT,AppName};
             KATEDevice app_Device{user_Window};
             KATESwapChain appSwapChain{app_Device,user_Window.getExtent()};

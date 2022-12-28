@@ -43,11 +43,21 @@ namespace kate{
         //return {{0,sizeof(Vertex),VK_VERTEX_INPUT_RATE_VERTEX}};
     }
     std::vector<VkVertexInputAttributeDescription> KATEModel::Vertex::getAttributesDescriptions(){
-        std::vector<VkVertexInputAttributeDescription> attributesDescriptions(1);
+        /*
+        std::vector<VkVertexInputAttributeDescription> attributesDescriptions(2);
         attributesDescriptions[0].binding = 0;
         attributesDescriptions[0].location = 0;
         attributesDescriptions[0].format = VK_FORMAT_R32G32_SFLOAT;
-        attributesDescriptions[0].offset = 0;
-        return attributesDescriptions;
+        attributesDescriptions[0].offset = offsetof(Vertex,position);
+
+        attributesDescriptions[1].binding = 0;
+        attributesDescriptions[1].location = 1;
+        attributesDescriptions[1].format = VK_FORMAT_R32G32B32_SFLOAT;
+        attributesDescriptions[1].offset = offsetof(Vertex,color);
+        return attributesDescriptions; */
+        return {
+            {0,0,VK_FORMAT_R32G32_SFLOAT,offsetof(Vertex,position)},
+            {1,0,VK_FORMAT_R32G32B32_SFLOAT,offsetof(Vertex,color)}
+            };
     }
 }
