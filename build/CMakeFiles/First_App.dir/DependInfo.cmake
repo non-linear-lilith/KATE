@@ -10,6 +10,7 @@ set(CMAKE_DEPENDS_LANGUAGES
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
   "/home/kathy/Documents/Vulkan_Proyects/VISUAL_NOVEL_ENGINE/src/first_app.cpp" "CMakeFiles/First_App.dir/src/first_app.cpp.o" "gcc" "CMakeFiles/First_App.dir/src/first_app.cpp.o.d"
   "/home/kathy/Documents/Vulkan_Proyects/VISUAL_NOVEL_ENGINE/src/kate_device.cpp" "CMakeFiles/First_App.dir/src/kate_device.cpp.o" "gcc" "CMakeFiles/First_App.dir/src/kate_device.cpp.o.d"
+  "/home/kathy/Documents/Vulkan_Proyects/VISUAL_NOVEL_ENGINE/src/kate_model.cpp" "CMakeFiles/First_App.dir/src/kate_model.cpp.o" "gcc" "CMakeFiles/First_App.dir/src/kate_model.cpp.o.d"
   "/home/kathy/Documents/Vulkan_Proyects/VISUAL_NOVEL_ENGINE/src/kate_pipeline.cpp" "CMakeFiles/First_App.dir/src/kate_pipeline.cpp.o" "gcc" "CMakeFiles/First_App.dir/src/kate_pipeline.cpp.o.d"
   "/home/kathy/Documents/Vulkan_Proyects/VISUAL_NOVEL_ENGINE/src/kate_swapp_chain.cpp" "CMakeFiles/First_App.dir/src/kate_swapp_chain.cpp.o" "gcc" "CMakeFiles/First_App.dir/src/kate_swapp_chain.cpp.o.d"
   "/home/kathy/Documents/Vulkan_Proyects/VISUAL_NOVEL_ENGINE/src/kate_window.cpp" "CMakeFiles/First_App.dir/src/kate_window.cpp.o" "gcc" "CMakeFiles/First_App.dir/src/kate_window.cpp.o.d"

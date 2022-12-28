@@ -2,16 +2,19 @@
 
 #include <stdexcept>
 #include <array>
-
+#include <unistd.h>
+#include <iostream>
 #ifndef ENGINE_DIR
 #define ENGINE_DIR "../include"
 #endif
 
 namespace kate{
     FirstApp::FirstApp(){
+        loadModels();
         createPipelineLayout();
         createPipeline();
         createCommandBuffers();
+
     }
     FirstApp::~FirstApp(){
         vkDestroyPipelineLayout(app_Device.device(),pipelineLayout,nullptr);
@@ -22,8 +25,27 @@ namespace kate{
             drawFrame();
         }
         vkDeviceWaitIdle(app_Device.device());
-
     }  
+    void FirstApp::loadModels(){
+            std::vector<KATEModel::Vertex> vertices{{{0.0f,-0.5f}},{{0.5f,0.5f}},{{-0.5f,0.5f}}};
+            appModel = std::make_unique<KATEModel>(app_Device,vertices);
+    }  
+
+    /*void FirstApp::sierpinski(std::vector<KATEModel::Vertex> &vertices,int depth,glm::vec2 left,glm::vec2 right,glm::vec2 top) {
+        if (depth <= 0) {
+            vertices.push_back({top});
+            vertices.push_back({right});
+            vertices.push_back({left});
+        } else {
+            auto leftTop = 0.5f * (left + top);
+            auto rightTop = 0.5f * (right + top);
+            auto leftRight = 0.5f * (left + right);
+            sierpinski(vertices, depth - 1, left, leftRight, leftTop);
+            sierpinski(vertices, depth - 1, leftRight, right, rightTop);
+            sierpinski(vertices, depth - 1, leftTop, rightTop, top);
+        }
+    }*/
+    
     void FirstApp::createPipelineLayout(){
         VkPipelineLayoutCreateInfo pipelineLayoutInfo{};
         pipelineLayoutInfo.sType = VK_STRUCTURE_TYPE_PIPELINE_LAYOUT_CREATE_INFO;
@@ -76,8 +98,11 @@ namespace kate{
             renderPassInfo.pClearValues = clearValues.data();
 
             vkCmdBeginRenderPass(commandBuffers[i],&renderPassInfo,VK_SUBPASS_CONTENTS_INLINE);
+
             appPipeline->bind(commandBuffers[i]);
-            vkCmdDraw(commandBuffers[i],3,1,0,0);
+            appModel->bind(commandBuffers[i]);
+            appModel->draw(commandBuffers[i]);
+
             vkCmdEndRenderPass(commandBuffers[i]);
             if(vkEndCommandBuffer(commandBuffers[i])!= VK_SUCCESS){
                 throw std::runtime_error("\x1B[31mFATAL ERROR: Failed to record Command Buffer\033[0m");

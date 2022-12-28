@@ -14,8 +14,9 @@ voy a usar este readme para anotar las cosas que me faltan.
     LISTO
 
     *crear un git con el proyecto y enviarlo a github como repositorio privado
-
+    LISTO
 
     *crear version de pruebas y debbuging
+    
     *crear motor como biblioteca para exportar a otros proyectos
     *Crear novela visual

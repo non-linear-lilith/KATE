@@ -3,6 +3,8 @@ file(REMOVE_RECURSE
   "CMakeFiles/First_App.dir/src/first_app.cpp.o.d"
   "CMakeFiles/First_App.dir/src/kate_device.cpp.o"
   "CMakeFiles/First_App.dir/src/kate_device.cpp.o.d"
+  "CMakeFiles/First_App.dir/src/kate_model.cpp.o"
+  "CMakeFiles/First_App.dir/src/kate_model.cpp.o.d"
   "CMakeFiles/First_App.dir/src/kate_pipeline.cpp.o"
   "CMakeFiles/First_App.dir/src/kate_pipeline.cpp.o.d"
   "CMakeFiles/First_App.dir/src/kate_swapp_chain.cpp.o"

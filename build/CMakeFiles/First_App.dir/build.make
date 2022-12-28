@@ -97,10 +97,24 @@ CMakeFiles/First_App.dir/src/kate_device.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/First_App.dir/src/kate_device.cpp.s"
 	/usr/bin/clang++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/kathy/Documents/Vulkan_Proyects/VISUAL_NOVEL_ENGINE/src/kate_device.cpp -o CMakeFiles/First_App.dir/src/kate_device.cpp.s
 
+CMakeFiles/First_App.dir/src/kate_model.cpp.o: CMakeFiles/First_App.dir/flags.make
+CMakeFiles/First_App.dir/src/kate_model.cpp.o: /home/kathy/Documents/Vulkan_Proyects/VISUAL_NOVEL_ENGINE/src/kate_model.cpp
+CMakeFiles/First_App.dir/src/kate_model.cpp.o: CMakeFiles/First_App.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/kathy/Documents/Vulkan_Proyects/VISUAL_NOVEL_ENGINE/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/First_App.dir/src/kate_model.cpp.o"
+	/usr/bin/clang++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/First_App.dir/src/kate_model.cpp.o -MF CMakeFiles/First_App.dir/src/kate_model.cpp.o.d -o CMakeFiles/First_App.dir/src/kate_model.cpp.o -c /home/kathy/Documents/Vulkan_Proyects/VISUAL_NOVEL_ENGINE/src/kate_model.cpp
+
+CMakeFiles/First_App.dir/src/kate_model.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/First_App.dir/src/kate_model.cpp.i"
+	/usr/bin/clang++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/kathy/Documents/Vulkan_Proyects/VISUAL_NOVEL_ENGINE/src/kate_model.cpp > CMakeFiles/First_App.dir/src/kate_model.cpp.i
+
+CMakeFiles/First_App.dir/src/kate_model.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/First_App.dir/src/kate_model.cpp.s"
+	/usr/bin/clang++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/kathy/Documents/Vulkan_Proyects/VISUAL_NOVEL_ENGINE/src/kate_model.cpp -o CMakeFiles/First_App.dir/src/kate_model.cpp.s
+
 CMakeFiles/First_App.dir/src/kate_pipeline.cpp.o: CMakeFiles/First_App.dir/flags.make
 CMakeFiles/First_App.dir/src/kate_pipeline.cpp.o: /home/kathy/Documents/Vulkan_Proyects/VISUAL_NOVEL_ENGINE/src/kate_pipeline.cpp
 CMakeFiles/First_App.dir/src/kate_pipeline.cpp.o: CMakeFiles/First_App.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/kathy/Documents/Vulkan_Proyects/VISUAL_NOVEL_ENGINE/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/First_App.dir/src/kate_pipeline.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/kathy/Documents/Vulkan_Proyects/VISUAL_NOVEL_ENGINE/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/First_App.dir/src/kate_pipeline.cpp.o"
 	/usr/bin/clang++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/First_App.dir/src/kate_pipeline.cpp.o -MF CMakeFiles/First_App.dir/src/kate_pipeline.cpp.o.d -o CMakeFiles/First_App.dir/src/kate_pipeline.cpp.o -c /home/kathy/Documents/Vulkan_Proyects/VISUAL_NOVEL_ENGINE/src/kate_pipeline.cpp
 
 CMakeFiles/First_App.dir/src/kate_pipeline.cpp.i: cmake_force
@@ -114,7 +128,7 @@ CMakeFiles/First_App.dir/src/kate_pipeline.cpp.s: cmake_force
 CMakeFiles/First_App.dir/src/kate_swapp_chain.cpp.o: CMakeFiles/First_App.dir/flags.make
 CMakeFiles/First_App.dir/src/kate_swapp_chain.cpp.o: /home/kathy/Documents/Vulkan_Proyects/VISUAL_NOVEL_ENGINE/src/kate_swapp_chain.cpp
 CMakeFiles/First_App.dir/src/kate_swapp_chain.cpp.o: CMakeFiles/First_App.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/kathy/Documents/Vulkan_Proyects/VISUAL_NOVEL_ENGINE/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/First_App.dir/src/kate_swapp_chain.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/kathy/Documents/Vulkan_Proyects/VISUAL_NOVEL_ENGINE/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object CMakeFiles/First_App.dir/src/kate_swapp_chain.cpp.o"
 	/usr/bin/clang++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/First_App.dir/src/kate_swapp_chain.cpp.o -MF CMakeFiles/First_App.dir/src/kate_swapp_chain.cpp.o.d -o CMakeFiles/First_App.dir/src/kate_swapp_chain.cpp.o -c /home/kathy/Documents/Vulkan_Proyects/VISUAL_NOVEL_ENGINE/src/kate_swapp_chain.cpp
 
 CMakeFiles/First_App.dir/src/kate_swapp_chain.cpp.i: cmake_force
@@ -128,7 +142,7 @@ CMakeFiles/First_App.dir/src/kate_swapp_chain.cpp.s: cmake_force
 CMakeFiles/First_App.dir/src/kate_window.cpp.o: CMakeFiles/First_App.dir/flags.make
 CMakeFiles/First_App.dir/src/kate_window.cpp.o: /home/kathy/Documents/Vulkan_Proyects/VISUAL_NOVEL_ENGINE/src/kate_window.cpp
 CMakeFiles/First_App.dir/src/kate_window.cpp.o: CMakeFiles/First_App.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/kathy/Documents/Vulkan_Proyects/VISUAL_NOVEL_ENGINE/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object CMakeFiles/First_App.dir/src/kate_window.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/kathy/Documents/Vulkan_Proyects/VISUAL_NOVEL_ENGINE/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building CXX object CMakeFiles/First_App.dir/src/kate_window.cpp.o"
 	/usr/bin/clang++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/First_App.dir/src/kate_window.cpp.o -MF CMakeFiles/First_App.dir/src/kate_window.cpp.o.d -o CMakeFiles/First_App.dir/src/kate_window.cpp.o -c /home/kathy/Documents/Vulkan_Proyects/VISUAL_NOVEL_ENGINE/src/kate_window.cpp
 
 CMakeFiles/First_App.dir/src/kate_window.cpp.i: cmake_force
@@ -142,7 +156,7 @@ CMakeFiles/First_App.dir/src/kate_window.cpp.s: cmake_force
 CMakeFiles/First_App.dir/src/main.cpp.o: CMakeFiles/First_App.dir/flags.make
 CMakeFiles/First_App.dir/src/main.cpp.o: /home/kathy/Documents/Vulkan_Proyects/VISUAL_NOVEL_ENGINE/src/main.cpp
 CMakeFiles/First_App.dir/src/main.cpp.o: CMakeFiles/First_App.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/kathy/Documents/Vulkan_Proyects/VISUAL_NOVEL_ENGINE/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building CXX object CMakeFiles/First_App.dir/src/main.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/kathy/Documents/Vulkan_Proyects/VISUAL_NOVEL_ENGINE/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Building CXX object CMakeFiles/First_App.dir/src/main.cpp.o"
 	/usr/bin/clang++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/First_App.dir/src/main.cpp.o -MF CMakeFiles/First_App.dir/src/main.cpp.o.d -o CMakeFiles/First_App.dir/src/main.cpp.o -c /home/kathy/Documents/Vulkan_Proyects/VISUAL_NOVEL_ENGINE/src/main.cpp
 
 CMakeFiles/First_App.dir/src/main.cpp.i: cmake_force
@@ -157,6 +171,7 @@ CMakeFiles/First_App.dir/src/main.cpp.s: cmake_force
 First_App_OBJECTS = \
 "CMakeFiles/First_App.dir/src/first_app.cpp.o" \
 "CMakeFiles/First_App.dir/src/kate_device.cpp.o" \
+"CMakeFiles/First_App.dir/src/kate_model.cpp.o" \
 "CMakeFiles/First_App.dir/src/kate_pipeline.cpp.o" \
 "CMakeFiles/First_App.dir/src/kate_swapp_chain.cpp.o" \
 "CMakeFiles/First_App.dir/src/kate_window.cpp.o" \
@@ -167,6 +182,7 @@ First_App_EXTERNAL_OBJECTS =
 
 First_App: CMakeFiles/First_App.dir/src/first_app.cpp.o
 First_App: CMakeFiles/First_App.dir/src/kate_device.cpp.o
+First_App: CMakeFiles/First_App.dir/src/kate_model.cpp.o
 First_App: CMakeFiles/First_App.dir/src/kate_pipeline.cpp.o
 First_App: CMakeFiles/First_App.dir/src/kate_swapp_chain.cpp.o
 First_App: CMakeFiles/First_App.dir/src/kate_window.cpp.o
@@ -175,7 +191,7 @@ First_App: CMakeFiles/First_App.dir/build.make
 First_App: /usr/lib/libglfw.so.3.3
 First_App: /lib/libvulkan.so
 First_App: CMakeFiles/First_App.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/kathy/Documents/Vulkan_Proyects/VISUAL_NOVEL_ENGINE/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Linking CXX executable First_App"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/kathy/Documents/Vulkan_Proyects/VISUAL_NOVEL_ENGINE/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Linking CXX executable First_App"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/First_App.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.

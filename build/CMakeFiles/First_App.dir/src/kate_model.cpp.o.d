@@ -1,6 +1,6 @@
-CMakeFiles/First_App.dir/src/kate_pipeline.cpp.o: \
-  /home/kathy/Documents/Vulkan_Proyects/VISUAL_NOVEL_ENGINE/src/kate_pipeline.cpp \
-  /home/kathy/Documents/Vulkan_Proyects/VISUAL_NOVEL_ENGINE/include/kate_pipeline.hpp \
+CMakeFiles/First_App.dir/src/kate_model.cpp.o: \
+  /home/kathy/Documents/Vulkan_Proyects/VISUAL_NOVEL_ENGINE/src/kate_model.cpp \
+  /home/kathy/Documents/Vulkan_Proyects/VISUAL_NOVEL_ENGINE/include/kate_model.hpp \
   /home/kathy/Documents/Vulkan_Proyects/VISUAL_NOVEL_ENGINE/include/kate_device.hpp \
   /home/kathy/Documents/Vulkan_Proyects/VISUAL_NOVEL_ENGINE/include/kate_window.hpp \
   /usr/include/GLFW/glfw3.h /usr/lib/clang/14.0.6/include/stddef.h \
@@ -120,7 +120,6 @@ CMakeFiles/First_App.dir/src/kate_pipeline.cpp.o: \
   /usr/bin/../lib64/gcc/x86_64-pc-linux-gnu/12.2.0/../../../../include/c++/12.2.0/bits/stl_vector.h \
   /usr/bin/../lib64/gcc/x86_64-pc-linux-gnu/12.2.0/../../../../include/c++/12.2.0/bits/stl_bvector.h \
   /usr/bin/../lib64/gcc/x86_64-pc-linux-gnu/12.2.0/../../../../include/c++/12.2.0/bits/vector.tcc \
-  /home/kathy/Documents/Vulkan_Proyects/VISUAL_NOVEL_ENGINE/include/kate_model.hpp \
   /usr/include/glm/glm.hpp /usr/include/glm/detail/_fixes.hpp \
   /usr/bin/../lib64/gcc/x86_64-pc-linux-gnu/12.2.0/../../../../include/c++/12.2.0/cmath \
   /usr/include/math.h /usr/include/bits/math-vector.h \
@@ -293,48 +292,5 @@ CMakeFiles/First_App.dir/src/kate_pipeline.cpp.o: \
   /usr/include/glm/detail/type_half.inl /usr/include/glm/geometric.hpp \
   /usr/include/glm/matrix.hpp /usr/include/glm/vector_relational.hpp \
   /usr/include/glm/integer.hpp /usr/include/glm/detail/func_integer.inl \
-  /usr/bin/../lib64/gcc/x86_64-pc-linux-gnu/12.2.0/../../../../include/c++/12.2.0/fstream \
-  /usr/bin/../lib64/gcc/x86_64-pc-linux-gnu/12.2.0/../../../../include/c++/12.2.0/istream \
-  /usr/bin/../lib64/gcc/x86_64-pc-linux-gnu/12.2.0/../../../../include/c++/12.2.0/ios \
-  /usr/bin/../lib64/gcc/x86_64-pc-linux-gnu/12.2.0/../../../../include/c++/12.2.0/exception \
-  /usr/bin/../lib64/gcc/x86_64-pc-linux-gnu/12.2.0/../../../../include/c++/12.2.0/bits/exception_ptr.h \
-  /usr/bin/../lib64/gcc/x86_64-pc-linux-gnu/12.2.0/../../../../include/c++/12.2.0/bits/cxxabi_init_exception.h \
-  /usr/bin/../lib64/gcc/x86_64-pc-linux-gnu/12.2.0/../../../../include/c++/12.2.0/typeinfo \
-  /usr/bin/../lib64/gcc/x86_64-pc-linux-gnu/12.2.0/../../../../include/c++/12.2.0/bits/nested_exception.h \
-  /usr/bin/../lib64/gcc/x86_64-pc-linux-gnu/12.2.0/../../../../include/c++/12.2.0/bits/ios_base.h \
-  /usr/bin/../lib64/gcc/x86_64-pc-linux-gnu/12.2.0/../../../../include/c++/12.2.0/ext/atomicity.h \
-  /usr/bin/../lib64/gcc/x86_64-pc-linux-gnu/12.2.0/../../../../include/c++/12.2.0/x86_64-pc-linux-gnu/bits/gthr.h \
-  /usr/bin/../lib64/gcc/x86_64-pc-linux-gnu/12.2.0/../../../../include/c++/12.2.0/x86_64-pc-linux-gnu/bits/gthr-default.h \
-  /usr/include/pthread.h /usr/include/sched.h /usr/include/bits/sched.h \
-  /usr/include/bits/types/struct_sched_param.h \
-  /usr/include/bits/cpu-set.h /usr/include/time.h \
-  /usr/include/bits/time.h /usr/include/bits/timex.h \
-  /usr/include/bits/types/struct_tm.h \
-  /usr/include/bits/types/struct_itimerspec.h /usr/include/bits/setjmp.h \
-  /usr/include/bits/types/struct___jmp_buf_tag.h \
-  /usr/bin/../lib64/gcc/x86_64-pc-linux-gnu/12.2.0/../../../../include/c++/12.2.0/x86_64-pc-linux-gnu/bits/atomic_word.h \
-  /usr/include/sys/single_threaded.h \
-  /usr/bin/../lib64/gcc/x86_64-pc-linux-gnu/12.2.0/../../../../include/c++/12.2.0/bits/locale_classes.h \
-  /usr/bin/../lib64/gcc/x86_64-pc-linux-gnu/12.2.0/../../../../include/c++/12.2.0/bits/locale_classes.tcc \
-  /usr/bin/../lib64/gcc/x86_64-pc-linux-gnu/12.2.0/../../../../include/c++/12.2.0/system_error \
-  /usr/bin/../lib64/gcc/x86_64-pc-linux-gnu/12.2.0/../../../../include/c++/12.2.0/x86_64-pc-linux-gnu/bits/error_constants.h \
-  /usr/bin/../lib64/gcc/x86_64-pc-linux-gnu/12.2.0/../../../../include/c++/12.2.0/stdexcept \
-  /usr/bin/../lib64/gcc/x86_64-pc-linux-gnu/12.2.0/../../../../include/c++/12.2.0/streambuf \
-  /usr/bin/../lib64/gcc/x86_64-pc-linux-gnu/12.2.0/../../../../include/c++/12.2.0/bits/streambuf.tcc \
-  /usr/bin/../lib64/gcc/x86_64-pc-linux-gnu/12.2.0/../../../../include/c++/12.2.0/bits/basic_ios.h \
-  /usr/bin/../lib64/gcc/x86_64-pc-linux-gnu/12.2.0/../../../../include/c++/12.2.0/bits/locale_facets.h \
-  /usr/bin/../lib64/gcc/x86_64-pc-linux-gnu/12.2.0/../../../../include/c++/12.2.0/cwctype \
-  /usr/include/wctype.h /usr/include/bits/wctype-wchar.h \
-  /usr/bin/../lib64/gcc/x86_64-pc-linux-gnu/12.2.0/../../../../include/c++/12.2.0/x86_64-pc-linux-gnu/bits/ctype_base.h \
-  /usr/bin/../lib64/gcc/x86_64-pc-linux-gnu/12.2.0/../../../../include/c++/12.2.0/bits/streambuf_iterator.h \
-  /usr/bin/../lib64/gcc/x86_64-pc-linux-gnu/12.2.0/../../../../include/c++/12.2.0/x86_64-pc-linux-gnu/bits/ctype_inline.h \
-  /usr/bin/../lib64/gcc/x86_64-pc-linux-gnu/12.2.0/../../../../include/c++/12.2.0/bits/locale_facets.tcc \
-  /usr/bin/../lib64/gcc/x86_64-pc-linux-gnu/12.2.0/../../../../include/c++/12.2.0/bits/basic_ios.tcc \
-  /usr/bin/../lib64/gcc/x86_64-pc-linux-gnu/12.2.0/../../../../include/c++/12.2.0/ostream \
-  /usr/bin/../lib64/gcc/x86_64-pc-linux-gnu/12.2.0/../../../../include/c++/12.2.0/bits/ostream.tcc \
-  /usr/bin/../lib64/gcc/x86_64-pc-linux-gnu/12.2.0/../../../../include/c++/12.2.0/bits/istream.tcc \
-  /usr/bin/../lib64/gcc/x86_64-pc-linux-gnu/12.2.0/../../../../include/c++/12.2.0/bits/codecvt.h \
-  /usr/bin/../lib64/gcc/x86_64-pc-linux-gnu/12.2.0/../../../../include/c++/12.2.0/x86_64-pc-linux-gnu/bits/basic_file.h \
-  /usr/bin/../lib64/gcc/x86_64-pc-linux-gnu/12.2.0/../../../../include/c++/12.2.0/x86_64-pc-linux-gnu/bits/c++io.h \
-  /usr/bin/../lib64/gcc/x86_64-pc-linux-gnu/12.2.0/../../../../include/c++/12.2.0/bits/fstream.tcc \
-  /usr/bin/../lib64/gcc/x86_64-pc-linux-gnu/12.2.0/../../../../include/c++/12.2.0/iostream
+  /usr/bin/../lib64/gcc/x86_64-pc-linux-gnu/12.2.0/../../../../include/c++/12.2.0/cstring \
+  /usr/include/string.h /usr/include/strings.h

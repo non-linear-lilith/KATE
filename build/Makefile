@@ -190,6 +190,30 @@ src/kate_device.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/First_App.dir/build.make CMakeFiles/First_App.dir/src/kate_device.cpp.s
 .PHONY : src/kate_device.cpp.s
 
+src/kate_model.o: src/kate_model.cpp.o
+.PHONY : src/kate_model.o
+
+# target to build an object file
+src/kate_model.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/First_App.dir/build.make CMakeFiles/First_App.dir/src/kate_model.cpp.o
+.PHONY : src/kate_model.cpp.o
+
+src/kate_model.i: src/kate_model.cpp.i
+.PHONY : src/kate_model.i
+
+# target to preprocess a source file
+src/kate_model.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/First_App.dir/build.make CMakeFiles/First_App.dir/src/kate_model.cpp.i
+.PHONY : src/kate_model.cpp.i
+
+src/kate_model.s: src/kate_model.cpp.s
+.PHONY : src/kate_model.s
+
+# target to generate assembly for a file
+src/kate_model.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/First_App.dir/build.make CMakeFiles/First_App.dir/src/kate_model.cpp.s
+.PHONY : src/kate_model.cpp.s
+
 src/kate_pipeline.o: src/kate_pipeline.cpp.o
 .PHONY : src/kate_pipeline.o
 
@@ -302,6 +326,9 @@ help:
 	@echo "... src/kate_device.o"
 	@echo "... src/kate_device.i"
 	@echo "... src/kate_device.s"
+	@echo "... src/kate_model.o"
+	@echo "... src/kate_model.i"
+	@echo "... src/kate_model.s"
 	@echo "... src/kate_pipeline.o"
 	@echo "... src/kate_pipeline.i"
 	@echo "... src/kate_pipeline.s"
