@@ -4,7 +4,7 @@
 
 // vulkan headers
 #include <vulkan/vulkan.h>
-
+#include <memory>
 // std lib headers
 #include <string>
 #include <vector>
@@ -16,10 +16,11 @@ namespace kate {
       static constexpr int MAX_FRAMES_IN_FLIGHT = 2;
 
       KATESwapChain(KATEDevice &deviceRef, VkExtent2D windowExtent);
+      KATESwapChain(KATEDevice &deviceRef, VkExtent2D windowExtent,std::shared_ptr<KATESwapChain> previous);
       ~KATESwapChain();
 
       KATESwapChain(const KATESwapChain &) = delete;
-      void operator=(const KATESwapChain &) = delete;
+      KATESwapChain& operator=(const KATESwapChain &) = delete;
 
       VkFramebuffer getFrameBuffer(int index) { return swapChainFramebuffers[index]; }
       VkRenderPass getRenderPass(){ return renderPass; } //a render pass describes the structure and format of our frame buffer objects and our atachments
@@ -39,6 +40,7 @@ namespace kate {
       VkResult submitCommandBuffers(const VkCommandBuffer *buffers, uint32_t *imageIndex);
 
     private:
+      void init();
       void createSwapChain();
       void createImageViews();
       void createDepthResources();
@@ -69,6 +71,7 @@ namespace kate {
       VkExtent2D windowExtent;
 
       VkSwapchainKHR swapChain;
+      std::shared_ptr<KATESwapChain> oldSwapChain;
 
       std::vector<VkSemaphore> imageAvailableSemaphores;
       std::vector<VkSemaphore> renderFinishedSemaphores;

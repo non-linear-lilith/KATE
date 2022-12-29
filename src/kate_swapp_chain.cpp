@@ -15,6 +15,13 @@
 namespace kate {
 
   KATESwapChain::KATESwapChain(KATEDevice &deviceRef, VkExtent2D extent): device{deviceRef}, windowExtent{extent} {
+    init();
+  }
+  KATESwapChain::KATESwapChain(KATEDevice &deviceRef, VkExtent2D extent,std::shared_ptr<KATESwapChain> previous): device{deviceRef}, windowExtent{extent},oldSwapChain{previous} {
+    init();
+    oldSwapChain = nullptr;
+  }
+  void KATESwapChain::init(){
     createSwapChain();
     createImageViews();
     createRenderPass();

@@ -37,7 +37,7 @@ namespace kate {
 
     // Not copyable or movable
     KATEDevice(const KATEDevice &) = delete;
-    void operator=(const KATEDevice &) = delete;
+    KATEDevice& operator=(const KATEDevice &) = delete;
     KATEDevice(KATEDevice &&) = delete;
     KATEDevice &operator=(KATEDevice &&) = delete;
 

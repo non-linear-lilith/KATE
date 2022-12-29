@@ -13,7 +13,7 @@
 namespace kate{
 
     KATEPipeline::KATEPipeline(KATEDevice& device, const std::string& vertexFilePath,const std::string& fragmentFilePath, const PipelineConfigInfo& pipeline_configuration_info): user_Device{device} {
-        createGraphicPipeline(vertexFilePath,fragmentFilePath,pipeline_configuration_info);
+        createGraphicsPipeline(vertexFilePath,fragmentFilePath,pipeline_configuration_info);
     }
     KATEPipeline::~KATEPipeline(){
         vkDestroyShaderModule(user_Device.device(),vertexShaderModule,nullptr);
@@ -39,10 +39,9 @@ namespace kate{
 
     void KATEPipeline::bind(VkCommandBuffer commandBuffer){
         vkCmdBindPipeline(commandBuffer,VK_PIPELINE_BIND_POINT_GRAPHICS,graphicsPipeline);
-        
     }
 
-    void KATEPipeline::createGraphicPipeline(const std::string& vertex_Filepath, const std::string& fragment_Filepath,const PipelineConfigInfo& pipeline_configuration_info){
+    void KATEPipeline::createGraphicsPipeline(const std::string& vertex_Filepath, const std::string& fragment_Filepath,const PipelineConfigInfo& pipeline_configuration_info){
         assert(pipeline_configuration_info.pipelineLayout!=VK_NULL_HANDLE && "Cannot create graphics pipeline: no pipelineLayout provided in configInfo UnU.");
         assert(pipeline_configuration_info.renderPass!=VK_NULL_HANDLE && "Cannot create graphics pipeline: no renderPass provided in configInfo UNU.");
         auto vertex_Code = readFile(vertex_Filepath);
@@ -55,6 +54,7 @@ namespace kate{
         VkPipelineShaderStageCreateInfo shaderStages[2];
 
         //Pipeline Vertex info 
+        
         shaderStages[0].sType = VK_STRUCTURE_TYPE_PIPELINE_SHADER_STAGE_CREATE_INFO;
         shaderStages[0].stage = VK_SHADER_STAGE_VERTEX_BIT;
         shaderStages[0].module = vertexShaderModule;
@@ -81,12 +81,6 @@ namespace kate{
         vertexInputInfo.pVertexAttributeDescriptions = attributeDescriptions.data();
         vertexInputInfo.pVertexBindingDescriptions = bindingDescriptions.data();
 
-        VkPipelineViewportStateCreateInfo viewportInfo{};
-        viewportInfo.sType = VK_STRUCTURE_TYPE_PIPELINE_VIEWPORT_STATE_CREATE_INFO;
-        viewportInfo.viewportCount = 1;
-        viewportInfo.pViewports = &pipeline_configuration_info.viewport;
-        viewportInfo.scissorCount = 1;
-        viewportInfo.pScissors = &pipeline_configuration_info.scissor;
 
         VkGraphicsPipelineCreateInfo pipelineInfo{};
         pipelineInfo.sType = VK_STRUCTURE_TYPE_GRAPHICS_PIPELINE_CREATE_INFO;
@@ -94,12 +88,12 @@ namespace kate{
         pipelineInfo.pStages = shaderStages; 
         pipelineInfo.pVertexInputState = &vertexInputInfo;
         pipelineInfo.pInputAssemblyState = &pipeline_configuration_info.inputAssemblyinfo;
-        pipelineInfo.pViewportState = &viewportInfo;
+        pipelineInfo.pViewportState = &pipeline_configuration_info.viewportInfo;
         pipelineInfo.pRasterizationState = &pipeline_configuration_info.rasterizationInfo;
         pipelineInfo.pMultisampleState = &pipeline_configuration_info.multisampleInfo;
         pipelineInfo.pColorBlendState = &pipeline_configuration_info.colorBlendInfo;
         pipelineInfo.pDepthStencilState = &pipeline_configuration_info.depthStencilInfo;
-        pipelineInfo.pDynamicState = nullptr;
+        pipelineInfo.pDynamicState = &pipeline_configuration_info.dynamicStateInfo;
 
         pipelineInfo.layout = pipeline_configuration_info.pipelineLayout;
         pipelineInfo.renderPass = pipeline_configuration_info.renderPass;
@@ -123,28 +117,18 @@ namespace kate{
         }
     }
 
-    PipelineConfigInfo KATEPipeline::defaultPipelineConfigInfo(uint32_t width, uint32_t height){
-        PipelineConfigInfo configInfo{};
+    void KATEPipeline::defaultPipelineConfigInfo(PipelineConfigInfo& configInfo){
         //Assembly Info
-
         configInfo.inputAssemblyinfo.sType = VK_STRUCTURE_TYPE_PIPELINE_INPUT_ASSEMBLY_STATE_CREATE_INFO;
         configInfo.inputAssemblyinfo.topology = VK_PRIMITIVE_TOPOLOGY_TRIANGLE_LIST;
-        configInfo.inputAssemblyinfo.primitiveRestartEnable = VK_FALSE; 
-        //Viewport
+        configInfo.inputAssemblyinfo.primitiveRestartEnable = VK_FALSE;
 
-        configInfo.viewport.x = 0.0f;
-        configInfo.viewport.y = 0.0f;
-        configInfo.viewport.width = static_cast<float>(width);
-        configInfo.viewport.height = static_cast<float>(height);
-        configInfo.viewport.minDepth = 0.0f;
-        configInfo.viewport.maxDepth = 1.0f;
-        //Viewport Info
-
-
-
-        //Scissor
-        configInfo.scissor.offset = {0, 0};
-        configInfo.scissor.extent = {width, height};
+        //Viewport Info 
+        configInfo.viewportInfo.sType = VK_STRUCTURE_TYPE_PIPELINE_VIEWPORT_STATE_CREATE_INFO;
+        configInfo.viewportInfo.viewportCount = 1;
+        configInfo.viewportInfo.pViewports = nullptr;
+        configInfo.viewportInfo.scissorCount = 1;
+        configInfo.viewportInfo.pScissors = nullptr;
 
         //Rasterization Info
         configInfo.rasterizationInfo.sType = VK_STRUCTURE_TYPE_PIPELINE_RASTERIZATION_STATE_CREATE_INFO;
@@ -201,7 +185,12 @@ namespace kate{
         configInfo.depthStencilInfo.front = {};  // Optional
         configInfo.depthStencilInfo.back = {};   // Optional
 
-        return configInfo;
+        configInfo.dynamicStateEnables = {VK_DYNAMIC_STATE_VIEWPORT, VK_DYNAMIC_STATE_SCISSOR};
+        configInfo.dynamicStateInfo.sType = VK_STRUCTURE_TYPE_PIPELINE_DYNAMIC_STATE_CREATE_INFO;
+        configInfo.dynamicStateInfo.pDynamicStates = configInfo.dynamicStateEnables.data();
+        configInfo.dynamicStateInfo.dynamicStateCount =
+        static_cast<uint32_t>(configInfo.dynamicStateEnables.size());
+        configInfo.dynamicStateInfo.flags = 0;
     }
 
 }

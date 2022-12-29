@@ -14,14 +14,25 @@ namespace kate //(KAT)herine (E)ngine
             KATEWindow(const KATEWindow &) = delete;
             KATEWindow &operator=(const KATEWindow &) = delete;
 
-            bool shouldlose(){return glfwWindowShouldClose(window);}
-            VkExtent2D getExtent(){return {static_cast<uint32_t>(WIDTH),static_cast<uint32_t>(HEIGHT)};};
-
+            bool shouldlose(){
+                return glfwWindowShouldClose(window);
+            }
+            VkExtent2D getExtent(){
+                return {static_cast<uint32_t>(WIDTH),static_cast<uint32_t>(HEIGHT)};
+            };
+            bool wasWindowResized(){
+                return frameBufferResized;
+            };
+            void resetWindowResizedFlag(){
+                frameBufferResized=false;
+            }
             void createWindowSurface(VkInstance instance, VkSurfaceKHR *surface);
         private:
+            static void framebufferResizeCallback(GLFWwindow *window,int width, int height);
             void initWindow();
-            const int WIDTH;
-            const int HEIGHT;
+            int WIDTH;
+            int HEIGHT;
+            bool frameBufferResized = false;
             std::string windowName;
             GLFWwindow *window; 
             

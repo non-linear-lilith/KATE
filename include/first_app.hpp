@@ -23,16 +23,19 @@ namespace kate{
 
         private:
             void sierpinski(std::vector<KATEModel::Vertex> &vertices,int depth,glm::vec2 left,glm::vec2 right,glm::vec2 top);
-            void loadModels();
+            void loadModels(); 
             void createPipelineLayout();
             void createPipeline();
             void createCommandBuffers();
+            void freeCommandBuffers();
             void drawFrame();
-            
+            void recreateSwapChain();
+            void recordCommandBuffer(int imageIndex);
+
             const std::string AppName = "KATherine Engine TESTING and DEBUGGING";
             KATEWindow user_Window{WIDTH,HEIGHT,AppName};
             KATEDevice app_Device{user_Window};
-            KATESwapChain appSwapChain{app_Device,user_Window.getExtent()};
+            std::unique_ptr<KATESwapChain> appSwapChain;
             std::unique_ptr<KATEPipeline> appPipeline;
             VkPipelineLayout pipelineLayout;
             std::vector<VkCommandBuffer> commandBuffers;
