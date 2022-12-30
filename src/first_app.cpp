@@ -1,24 +1,27 @@
 #include "first_app.hpp"
-
+//glm libs
 #define GLM_FORCE_RADIANS
 #define GLM_FORCE_DEPTH_ZERO_TO_ONE
 #include <glm/glm.hpp>
-
+#include <glm/gtc/constants.hpp>
+//std libs
 #include <stdexcept>
 #include <array>
 #include <unistd.h>
 #include <iostream>
+//Cmake headers directory declaration
 #ifndef ENGINE_DIR
 #define ENGINE_DIR "../include"
 #endif
 
 namespace kate{
     struct SimplePushConstantData{
+        glm::mat2 transform{1.f};
         glm::vec2 offset;
         alignas(16) glm::vec3 color; 
     };
     FirstApp::FirstApp(){
-        loadModels();
+        loadGameObjects();
         createPipelineLayout();
         recreateSwapChain();
         createCommandBuffers();
@@ -33,13 +36,22 @@ namespace kate{
         }
         vkDeviceWaitIdle(app_Device.device());
     }
-    void FirstApp::loadModels(){
+
+    void FirstApp::loadGameObjects(){
             std::vector<KATEModel::Vertex> vertices{
-                {{0.0f,-0.366f},{1.0f,0.0f,0.0f}},
+                {{0.0f,-0.5f},{1.0f,0.0f,0.0f}},
                 {{0.5f,0.5f},{0.0f,1.0f,0.0f}},
                 {{-0.5f,0.5f},{0.0f,0.0f,1.0f}}
             };
-            appModel = std::make_unique<KATEModel>(app_Device,vertices);
+            auto app_model = std::make_shared<KATEModel>(app_Device,vertices);
+            auto triangle = KATEGameObject::createGameObject();
+            triangle.model = app_model;
+            triangle.color = {.1f, .8f, .1f};
+            //triangle.transform2d.translation.x = .2f;
+            //triangle.transform2d.scale = {2.f,.5f};
+            triangle.transform2d.rotation = .25f * glm::two_pi<float>();
+            
+            gameObjects.push_back(std::move(triangle));
     }
     void FirstApp::createPipelineLayout(){
         VkPushConstantRange pushConstantRange{};
@@ -88,7 +100,7 @@ namespace kate{
         }
         appSwapChain = std::make_unique<KATESwapChain>(app_Device,extent);
         createPipeline();
-    } 
+    }
     void FirstApp::createCommandBuffers(){
         commandBuffers.resize(appSwapChain->imageCount());
 
@@ -96,16 +108,13 @@ namespace kate{
         allocInfo.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_ALLOCATE_INFO;
         allocInfo.level = VK_COMMAND_BUFFER_LEVEL_PRIMARY;
         allocInfo.commandPool = app_Device.getCommandPool();
-        allocInfo.commandBufferCount = static_cast<uint32_t>(commandBuffers.size());
+        allocInfo.commandBufferCount = static_cast<uint32_t>(commandBuffers.size());//commandBufferCount ok
 
         if(vkAllocateCommandBuffers(app_Device.device(),&allocInfo,commandBuffers.data())!=VK_SUCCESS){
             throw std::runtime_error("\x1B[31mFATAL ERROR: Failed to allocate command Buffers!\033[0m");
         }
     };
     void FirstApp::recordCommandBuffer(int imageIndex){
-        static int frame=0;
-        frame = (frame+1)%1000;
-
         VkCommandBufferBeginInfo beginInfo{};
         beginInfo.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_BEGIN_INFO; 
 
@@ -116,7 +125,7 @@ namespace kate{
         renderPassInfo.sType = VK_STRUCTURE_TYPE_RENDER_PASS_BEGIN_INFO;
         renderPassInfo.renderPass = appSwapChain->getRenderPass();
         renderPassInfo.framebuffer = appSwapChain->getFrameBuffer(imageIndex);
-        //RENDER AREA 
+        //RENDER AREA
         renderPassInfo.renderArea.offset  = {0,0};
         renderPassInfo.renderArea.extent = appSwapChain->getSwapChainExtent();
         //CLEAR VALUES
@@ -140,21 +149,29 @@ namespace kate{
         vkCmdSetViewport(commandBuffers[imageIndex], 0, 1, &viewport);
         vkCmdSetScissor(commandBuffers[imageIndex], 0, 1, &scissor);
 
-        appPipeline->bind(commandBuffers[imageIndex]);
-        appModel->bind(commandBuffers[imageIndex]);
-        for(int it = 0;it<4;it++){
-            SimplePushConstantData push{};
-            push.offset = {-0.5f+frame*0.002f,-0.4f+it*0.25f};
-            push.color = {0.0f,0.0f,0.2f+0.2f*it};
-            vkCmdPushConstants(commandBuffers[imageIndex],pipelineLayout,VK_SHADER_STAGE_VERTEX_BIT | VK_SHADER_STAGE_FRAGMENT_BIT,0,sizeof(SimplePushConstantData),&push);
-            appModel->draw(commandBuffers[imageIndex]);
-        }
+        renderGameObjects(commandBuffers[imageIndex]);
 
         vkCmdEndRenderPass(commandBuffers[imageIndex]);
         if(vkEndCommandBuffer(commandBuffers[imageIndex])!= VK_SUCCESS){
             throw std::runtime_error("\x1B[31mFATAL ERROR: Failed to record Command Buffer\033[0m");
         }
     }
+
+    void FirstApp::renderGameObjects(VkCommandBuffer commandBuffer){
+        appPipeline->bind(commandBuffer);
+        for(auto& obj:gameObjects){
+            obj.transform2d.rotation = glm::mod(obj.transform2d.rotation + 0.01f,glm::two_pi<float>());
+
+            SimplePushConstantData push{};
+            push.offset = obj.transform2d.translation;
+            push.color = obj.color;
+            push.transform = obj.transform2d.mat2();
+            vkCmdPushConstants(commandBuffer,pipelineLayout,VK_SHADER_STAGE_VERTEX_BIT | VK_SHADER_STAGE_FRAGMENT_BIT,0,sizeof(SimplePushConstantData),&push);
+            obj.model->bind(commandBuffer);
+            obj.model->draw(commandBuffer);
+        }
+    }
+
     void FirstApp::drawFrame(){
         uint32_t imageIndex;
         auto result = appSwapChain->acquireNextImage(&imageIndex);

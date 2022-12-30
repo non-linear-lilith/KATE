@@ -5,7 +5,7 @@ NOTAS:
 
 
 
-    
+
 voy a usar este readme para anotar las cosas que me faltan.
 
 
@@ -17,6 +17,17 @@ voy a usar este readme para anotar las cosas que me faltan.
     LISTO
 
     *crear version de pruebas y debbuging
-    
-    *crear motor como biblioteca para exportar a otros proyectos
+
+    *Terminar el tutorial https://www.youtube.com/watch?v=gxUcgc88tD4&list=PL8327DO66nu9qYVKLDmdLW_84-yE4auCR&index=12 12/31
+
+    *una vez terminado el tutorial se deberan realizar distintos tipos de motores:
+    *novela visual:
+        -libreria de novela visual (graficos 2d sin plataformas ni fisicas, solo presentacion de imagenes y GUI)
+        -libreria de user input para novela visual
+
+    *roguelike soulslike action rpg:
+        -libreria de graficos motor 3d
+        -libreria de fisicas 3d
+        -libreria de user input para este tipo de juego 
+
     *Crear novela visual

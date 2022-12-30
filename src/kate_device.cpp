@@ -527,5 +527,4 @@ namespace kate {
             throw std::runtime_error("\x1B[31mFatal Error: failed to bind image memory!\033[0m");
         }
     }
-
 }  // namespace lve

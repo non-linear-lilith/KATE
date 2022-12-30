@@ -103,8 +103,15 @@ CMakeFiles/First_App.dir/src/main.cpp.o: \
  /usr/include/c++/12.2.0/bits/charconv.h \
  /usr/include/c++/12.2.0/bits/basic_string.tcc \
  /home/kathy/Documents/Vulkan_Proyects/KATE/include/first_app.hpp \
- /usr/include/c++/12.2.0/memory \
+ /home/kathy/Documents/Vulkan_Proyects/KATE/include/kate_pipeline.hpp \
+ /home/kathy/Documents/Vulkan_Proyects/KATE/include/kate_device.hpp \
+ /usr/include/c++/12.2.0/vector \
  /usr/include/c++/12.2.0/bits/stl_uninitialized.h \
+ /usr/include/c++/12.2.0/bits/stl_vector.h \
+ /usr/include/c++/12.2.0/bits/stl_bvector.h \
+ /usr/include/c++/12.2.0/bits/vector.tcc \
+ /home/kathy/Documents/Vulkan_Proyects/KATE/include/kate_swap_chain.hpp \
+ /usr/include/c++/12.2.0/memory \
  /usr/include/c++/12.2.0/bits/stl_tempbuf.h \
  /usr/include/c++/12.2.0/bits/stl_raw_storage_iter.h \
  /usr/include/c++/12.2.0/bits/align.h /usr/include/c++/12.2.0/bit \
@@ -138,12 +145,7 @@ CMakeFiles/First_App.dir/src/main.cpp.o: \
  /usr/include/c++/12.2.0/backward/auto_ptr.h \
  /usr/include/c++/12.2.0/pstl/glue_memory_defs.h \
  /usr/include/c++/12.2.0/pstl/execution_defs.h \
- /usr/include/c++/12.2.0/vector /usr/include/c++/12.2.0/bits/stl_vector.h \
- /usr/include/c++/12.2.0/bits/stl_bvector.h \
- /usr/include/c++/12.2.0/bits/vector.tcc \
- /home/kathy/Documents/Vulkan_Proyects/KATE/include/kate_pipeline.hpp \
- /home/kathy/Documents/Vulkan_Proyects/KATE/include/kate_device.hpp \
- /home/kathy/Documents/Vulkan_Proyects/KATE/include/kate_swap_chain.hpp \
+ /home/kathy/Documents/Vulkan_Proyects/KATE/include/kate_game_object.hpp \
  /home/kathy/Documents/Vulkan_Proyects/KATE/include/kate_model.hpp \
  /usr/include/glm/glm.hpp /usr/include/glm/detail/_fixes.hpp \
  /usr/include/c++/12.2.0/cmath /usr/include/math.h \

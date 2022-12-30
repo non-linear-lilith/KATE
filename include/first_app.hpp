@@ -1,12 +1,14 @@
 #pragma once
-#include <memory>
-#include <vector>
-
 #include "kate_window.hpp"
 #include "kate_pipeline.hpp"
 #include "kate_device.hpp"
 #include "kate_swap_chain.hpp"
-#include "kate_model.hpp"
+#include "kate_game_object.hpp"
+
+#include <memory>
+#include <vector>
+
+
 
 namespace kate{
     class FirstApp //https://www.youtube.com/watch?v=lr93-_cC8v4&list=PL8327DO66nu9qYVKLDmdLW_84-yE4auCR&index=2
@@ -22,8 +24,7 @@ namespace kate{
             static constexpr int HEIGHT = 600;
 
         private:
-            void sierpinski(std::vector<KATEModel::Vertex> &vertices,int depth,glm::vec2 left,glm::vec2 right,glm::vec2 top);
-            void loadModels(); 
+            void loadGameObjects(); 
             void createPipelineLayout();
             void createPipeline();
             void createCommandBuffers();
@@ -31,6 +32,7 @@ namespace kate{
             void drawFrame();
             void recreateSwapChain();
             void recordCommandBuffer(int imageIndex);
+            void renderGameObjects(VkCommandBuffer VkCommandBuffer);
 
             const std::string AppName = "KATherine Engine TESTING and DEBUGGING";
             KATEWindow user_Window{WIDTH,HEIGHT,AppName};
@@ -39,6 +41,6 @@ namespace kate{
             std::unique_ptr<KATEPipeline> appPipeline;
             VkPipelineLayout pipelineLayout;
             std::vector<VkCommandBuffer> commandBuffers;
-            std::unique_ptr<KATEModel> appModel;
+            std::vector<KATEGameObject> gameObjects;
     };
 }
