@@ -1,4 +1,0 @@
-/home/kathy/Documents/Vulkan_Proyects/KATE/build/CMakeFiles/First_App.dir
-/home/kathy/Documents/Vulkan_Proyects/KATE/build/CMakeFiles/Shaders.dir
-/home/kathy/Documents/Vulkan_Proyects/KATE/build/CMakeFiles/edit_cache.dir
-/home/kathy/Documents/Vulkan_Proyects/KATE/build/CMakeFiles/rebuild_cache.dir
