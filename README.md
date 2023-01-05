@@ -1,7 +1,10 @@
 Instrucciones de instalación en Linux:
-use este comando
+Use este comando:
+
 ./ArchLinux_build.sh
+
 Se esta trabajando en una version para windows/mac, una vez terminado el periodo de pruebas se realizará los ports correspondientes.
+
 NOTAS:
     \x1B[31m   \033[0m color rojo para errores
     \x1B[32m   \033[0m color verde para exitos
