@@ -55,7 +55,7 @@ namespace kate{
         attributesDescriptions[1].format = VK_FORMAT_R32G32B32_SFLOAT;
         attributesDescriptions[1].offset = offsetof(Vertex,color);
         return attributesDescriptions; */
-        return {
+        return {    
             {0,0,VK_FORMAT_R32G32_SFLOAT,offsetof(Vertex,position)},
             {1,0,VK_FORMAT_R32G32B32_SFLOAT,offsetof(Vertex,color)}
             };

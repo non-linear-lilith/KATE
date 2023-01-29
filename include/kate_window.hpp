@@ -14,7 +14,7 @@ namespace kate //(KAT)herine (E)ngine
             KATEWindow(const KATEWindow &) = delete;
             KATEWindow &operator=(const KATEWindow &) = delete;
 
-            bool shouldlose(){
+            bool shouldClose(){
                 return glfwWindowShouldClose(window);
             }
             VkExtent2D getExtent(){

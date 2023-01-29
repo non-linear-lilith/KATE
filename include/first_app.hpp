@@ -1,8 +1,7 @@
 #pragma once
 #include "kate_window.hpp"
-#include "kate_pipeline.hpp"
 #include "kate_device.hpp"
-#include "kate_swap_chain.hpp"
+#include "kate_renderer.hpp"
 #include "kate_game_object.hpp"
 
 #include <memory>
@@ -25,22 +24,14 @@ namespace kate{
 
         private:
             void loadGameObjects(); 
-            void createPipelineLayout();
-            void createPipeline();
-            void createCommandBuffers();
-            void freeCommandBuffers();
-            void drawFrame();
-            void recreateSwapChain();
-            void recordCommandBuffer(int imageIndex);
-            void renderGameObjects(VkCommandBuffer VkCommandBuffer);
 
             const std::string AppName = "KATherine Engine TESTING and DEBUGGING";
+
             KATEWindow user_Window{WIDTH,HEIGHT,AppName};
             KATEDevice app_Device{user_Window};
-            std::unique_ptr<KATESwapChain> appSwapChain;
-            std::unique_ptr<KATEPipeline> appPipeline;
-            VkPipelineLayout pipelineLayout;
-            std::vector<VkCommandBuffer> commandBuffers;
+            
+            
+            KATERenderer appRenderer{user_Window,app_Device};
             std::vector<KATEGameObject> gameObjects;
     };
 }

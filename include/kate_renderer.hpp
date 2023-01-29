@@ -2,14 +2,14 @@
 #include "kate_window.hpp"
 #include "kate_device.hpp"
 #include "kate_swap_chain.hpp"
-
+#include <cassert>
 #include <memory>
 #include <vector>
 
 
 
 namespace kate{
-    class KATERenderer //https://www.youtube.com/watch?v=lr93-_cC8v4&list=PL8327DO66nu9qYVKLDmdLW_84-yE4auCR&index=2
+    class KATERenderer 
     {
         public:
             KATERenderer(KATEWindow &window,KATEDevice &device);
@@ -17,6 +17,24 @@ namespace kate{
             KATERenderer(const KATERenderer&)=delete;
             KATERenderer &operator=(const KATERenderer &)=delete;
 
+            bool isFrameInProgress() const {
+                return isFrameStarted;
+            }  
+            VkCommandBuffer getCurrentCommandBuffer()const{
+                assert(isFrameStarted && "Cannot get command buffer when frame not in progress");
+                return commandBuffers[currentFrameIndex];
+            }
+            VkCommandBuffer beginFrame();
+            void endFrame();
+            void beginSwapChainRenderPass(VkCommandBuffer commandBuffer);
+            void endSwapChainRenderPass(VkCommandBuffer commandBuffer);
+            VkRenderPass getSwapChainRenderPass() const { 
+                return appSwapChain->getRenderPass(); 
+            }
+            int getFrameIndex() const{
+                assert(isFrameStarted && "Cannot get frae when frame not in proggress");
+                return currentFrameIndex;
+            }
         private:
 
             void createCommandBuffers();
@@ -24,9 +42,12 @@ namespace kate{
             void drawFrame();
             void recreateSwapChain();
 
-            KATEWindow user_Window;
-            KATEDevice app_Device{user_Window};
+            KATEWindow &user_Window;
+            KATEDevice &app_Device;
             std::unique_ptr<KATESwapChain> appSwapChain;
             std::vector<VkCommandBuffer> commandBuffers;
+            uint32_t currentImageIndex;
+            bool isFrameStarted=false;
+            int currentFrameIndex = 0 ;
     };
 }

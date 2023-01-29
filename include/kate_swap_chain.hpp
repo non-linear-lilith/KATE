@@ -38,7 +38,9 @@ namespace kate {
 
       VkResult acquireNextImage(uint32_t *imageIndex);
       VkResult submitCommandBuffers(const VkCommandBuffer *buffers, uint32_t *imageIndex);
-
+      bool compareSwapFormats(const KATESwapChain &swapChain) const {
+        return swapChain.swapChainDepthFormat == swapChainDepthFormat && swapChain.swapChainImageFormat == swapChainImageFormat;
+      }
     private:
       void init();
       void createSwapChain();
@@ -78,6 +80,7 @@ namespace kate {
       std::vector<VkFence> inFlightFences;
       std::vector<VkFence> imagesInFlight;
       size_t currentFrame = 0;
+      VkFormat swapChainDepthFormat;
   };
 
 }
