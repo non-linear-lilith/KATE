@@ -39,7 +39,7 @@ namespace kate{
 
         }
         vkDeviceWaitIdle(app_Device.device());
-    }
+    } 
 
     void FirstApp::loadGameObjects(){
             std::vector<KATEModel::Vertex> vertices{
