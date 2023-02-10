@@ -25,7 +25,7 @@ namespace kate{
         private:
             void loadGameObjects(); 
 
-            const std::string AppName = "KATherine Engine TESTING and DEBUGGING";
+            std::string AppName = "(KAT)herine (E)ngine testing and debbuging";
 
             KATEWindow user_Window{WIDTH,HEIGHT,AppName};
             KATEDevice app_Device{user_Window};

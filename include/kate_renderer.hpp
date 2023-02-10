@@ -28,9 +28,11 @@ namespace kate{
             void endFrame();
             void beginSwapChainRenderPass(VkCommandBuffer commandBuffer);
             void endSwapChainRenderPass(VkCommandBuffer commandBuffer);
+
             VkRenderPass getSwapChainRenderPass() const { 
                 return appSwapChain->getRenderPass(); 
             }
+            float getAspectRatio()const{return appSwapChain->extentAspectRatio();}
             int getFrameIndex() const{
                 assert(isFrameStarted && "Cannot get frae when frame not in proggress");
                 return currentFrameIndex;
@@ -39,7 +41,7 @@ namespace kate{
 
             void createCommandBuffers();
             void freeCommandBuffers();
-            void drawFrame();
+            void drawFrame(); 
             void recreateSwapChain();
 
             KATEWindow &user_Window;

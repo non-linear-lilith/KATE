@@ -27,6 +27,9 @@ namespace kate //(KAT)herine (E)ngine
                 frameBufferResized=false;
             }
             void createWindowSurface(VkInstance instance, VkSurfaceKHR *surface);
+            GLFWwindow* getGLFWWindow() const{
+                return window;
+            }
         private:
             static void framebufferResizeCallback(GLFWwindow *window,int width, int height);
             void initWindow();

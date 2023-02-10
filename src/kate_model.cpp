@@ -47,7 +47,7 @@ namespace kate{
         std::vector<VkVertexInputAttributeDescription> attributesDescriptions(2);
         attributesDescriptions[0].binding = 0;
         attributesDescriptions[0].location = 0;
-        attributesDescriptions[0].format = VK_FORMAT_R32G32_SFLOAT;
+        attributesDescriptions[0].format = VK_FORMAT_R32G32B32_SFLOAT;
         attributesDescriptions[0].offset = offsetof(Vertex,position);
 
         attributesDescriptions[1].binding = 0;
@@ -56,7 +56,7 @@ namespace kate{
         attributesDescriptions[1].offset = offsetof(Vertex,color);
         return attributesDescriptions; */
         return {    
-            {0,0,VK_FORMAT_R32G32_SFLOAT,offsetof(Vertex,position)},
+            {0,0,VK_FORMAT_R32G32B32_SFLOAT,offsetof(Vertex,position)},
             {1,0,VK_FORMAT_R32G32B32_SFLOAT,offsetof(Vertex,color)}
             };
     }
