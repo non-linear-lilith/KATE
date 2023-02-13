@@ -1,4 +1,4 @@
-#include "../../include/input/keyboard_input.hpp" //FIX AT CMAKELISTS google "target_include_directories"
+#include "input/keyboard_input.hpp"
 
 #include <cassert>
 #include <limits>

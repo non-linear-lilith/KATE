@@ -54,13 +54,13 @@ else()
 	message(STATUS "Using glfw lib at: ${GLFW_LIB}")
 endif()
 
+message(STATUS "ADDING EXTERNAL DEPENDENCIES")
 include_directories(external)
+message(STATUS "Using external/tinyobjloader")
+set(TINYOBJ_PATH external/tinyobjloader)
+message(STATUS "Using external/freetype")
+set(FREETYPE_PATH external/freetype)
 
-# If TINYOBJ_PATH not specified in .env.cmake, try fetching from git repo
-if (NOT TINYOBJ_PATH)
-  message(STATUS "TINYOBJ_PATH not specified in .env.cmake, using external/tinyobjloader")
-  set(TINYOBJ_PATH external/tinyobjloader)
-endif()
 
 file(GLOB_RECURSE SOURCES ${PROJECT_SOURCE_DIR}/src/*.cpp)
 
@@ -88,6 +88,7 @@ if (WIN32)
     ${PROJECT_SOURCE_DIR}/src
     ${Vulkan_INCLUDE_DIRS}
     ${TINYOBJ_PATH}
+    ${FREETYPE_PATH}
     ${GLFW_INCLUDE_DIRS}
     ${GLM_PATH}
     )

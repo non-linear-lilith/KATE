@@ -16,9 +16,10 @@
 #include <iostream>
 #include <stdexcept>
 #include <unistd.h>
+#include <string.h>
 
 //Cmake headers directory declaration
-const float MAX_FRAME_TIME = 00.1f;
+const float MAX_FRAME_TIME = 0.01f;
 
 namespace kate{
     
@@ -27,22 +28,30 @@ namespace kate{
     }
     FirstApp::~FirstApp(){
     }
+    static double xpos, ypos;
+
     void FirstApp::run() {
         SimpleRenderSystem simpleRenderSystem{app_Device, appRenderer.getSwapChainRenderPass()};
         KATECamera camera{};
         //camera.setViewTarget(glm::vec3(-1.f,-1.f,1.f),glm::vec3(0.f,0.f,2.5f)); //set camera angle and position}
-
         auto viewerObject = KATEGameObject::createGameObject();
         KeyboardInput cameraController;
+        //glfwSetInputMode(user_Window.getGLFWWindow(), GLFW_CURSOR, GLFW_CURSOR_HIDDEN); //HIDE CURSOR  
         
-
         auto currentTime{std::chrono::high_resolution_clock::now()};
+        uint8_t oscilator = 0;
         while (!user_Window.shouldClose()) {
             glfwPollEvents();
-            auto newTime{std::chrono::high_resolution_clock::now()};
-            float frameTime = std::chrono::duration<float,std::chrono::seconds::period>(newTime-currentTime).count();
-            currentTime = newTime;
-            frameTime = glm::min(frameTime,MAX_FRAME_TIME);
+
+        auto newTime{std::chrono::high_resolution_clock::now()};
+        float frameTime = std::chrono::duration<float,std::chrono::seconds::period>(newTime-currentTime).count();
+        currentTime = newTime;
+        frameTime = glm::min(frameTime,MAX_FRAME_TIME);
+
+
+            //glfwGetCursorPos(user_Window.getGLFWWindow(),&xpos,&ypos);  ss
+            //std::cout<<"x:"<<xpos<<"| y:"<<ypos<<"\n";
+
             cameraController.moveInPlaneXZ(user_Window.getGLFWWindow(),frameTime,viewerObject);
             camera.setViewYXZ(viewerObject.transform.translation,viewerObject.transform.rotation);
             float aspect = appRenderer.getAspectRatio();
@@ -56,76 +65,21 @@ namespace kate{
                 appRenderer.endFrame();
             }
 
+                gameObjects.at(0).transform.rotation = {0.f,glm::pi<float>()/2.f,glm::pi<float>()};
+
         }
         vkDeviceWaitIdle(app_Device.device());
-    } 
-    std::unique_ptr<KATEModel> createCubeModel(KATEDevice& device, glm::vec3 offset) {
-
-        std::vector<KATEModel::Vertex> vertices{
-        
-            // left face (white)
-            {{-.5f, -.5f, -.5f}, {.9f, .9f, .9f}},
-            {{-.5f, .5f, .5f}, {.9f, .9f, .9f}},
-            {{-.5f, -.5f, .5f}, {.9f, .9f, .9f}},
-            {{-.5f, -.5f, -.5f}, {.9f, .9f, .9f}},
-            {{-.5f, .5f, -.5f}, {.9f, .9f, .9f}},
-            {{-.5f, .5f, .5f}, {.9f, .9f, .9f}},
-        
-            // right face (yellow)
-            {{.5f, -.5f, -.5f}, {.8f, .8f, .1f}},
-            {{.5f, .5f, .5f}, {.8f, .8f, .1f}},
-            {{.5f, -.5f, .5f}, {.8f, .8f, .1f}},
-            {{.5f, -.5f, -.5f}, {.8f, .8f, .1f}},
-            {{.5f, .5f, -.5f}, {.8f, .8f, .1f}},
-            {{.5f, .5f, .5f}, {.8f, .8f, .1f}},
-        
-            // top face (orange, remember y axis points down)
-            {{-.5f, -.5f, -.5f}, {.9f, .6f, .1f}},
-            {{.5f, -.5f, .5f}, {.9f, .6f, .1f}},
-            {{-.5f, -.5f, .5f}, {.9f, .6f, .1f}},
-            {{-.5f, -.5f, -.5f}, {.9f, .6f, .1f}},
-            {{.5f, -.5f, -.5f}, {.9f, .6f, .1f}},
-            {{.5f, -.5f, .5f}, {.9f, .6f, .1f}},
-        
-            // bottom face (red)
-            {{-.5f, .5f, -.5f}, {.8f, .1f, .1f}},
-            {{.5f, .5f, .5f}, {.8f, .1f, .1f}},
-            {{-.5f, .5f, .5f}, {.8f, .1f, .1f}},
-            {{-.5f, .5f, -.5f}, {.8f, .1f, .1f}},
-            {{.5f, .5f, -.5f}, {.8f, .1f, .1f}},
-            {{.5f, .5f, .5f}, {.8f, .1f, .1f}},
-        
-            // nose face (blue)
-            {{-.5f, -.5f, 0.5f}, {.1f, .1f, .8f}},
-            {{.5f, .5f, 0.5f}, {.1f, .1f, .8f}},
-            {{-.5f, .5f, 0.5f}, {.1f, .1f, .8f}},
-            {{-.5f, -.5f, 0.5f}, {.1f, .1f, .8f}},
-            {{.5f, -.5f, 0.5f}, {.1f, .1f, .8f}},
-            {{.5f, .5f, 0.5f}, {.1f, .1f, .8f}},
-        
-            // tail face (green)
-            {{-.5f, -.5f, -0.5f}, {.1f, .8f, .1f}},
-            {{.5f, .5f, -0.5f}, {.1f, .8f, .1f}},
-            {{-.5f, .5f, -0.5f}, {.1f, .8f, .1f}},
-            {{-.5f, -.5f, -0.5f}, {.1f, .8f, .1f}},
-            {{.5f, -.5f, -0.5f}, {.1f, .8f, .1f}},
-            {{.5f, .5f, -0.5f}, {.1f, .8f, .1f}},
-        
-        };
-        for (auto& v : vertices) {
-            v.position += offset;
-        }
-        return std::make_unique<KATEModel>(device, vertices);
     }
+
 
     void FirstApp::loadGameObjects(){
-            std::shared_ptr<KATEModel> cube_model = createCubeModel(app_Device,{.0f,.0f,.0f});
-            auto cube = KATEGameObject::createGameObject();
-            cube.model = cube_model; 
-            cube.transform.translation = {.0f,.0f,2.5f};
-            cube.transform.scale = {.5f,.5f,.5f};
-            gameObjects.push_back(std::move(cube));
-
-    }
-
+            std::shared_ptr<KATEModel> rat_model = KATEModel::createModelFromFile(app_Device,"../data/models/rat.obj");
+            auto rat = KATEGameObject::createGameObject();
+            rat.model = rat_model; 
+            rat.transform.translation = {.0f,.5f,4.f};
+            rat.transform.rotation = {0.f,glm::pi<float>()/2.f,glm::pi<float>()};
+            rat.transform.scale = glm::vec3(0.5f);
+            
+            gameObjects.push_back(std::move(rat));
+            }
 }

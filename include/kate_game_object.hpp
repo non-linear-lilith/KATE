@@ -8,9 +8,9 @@ namespace kate{
         struct TransformComponent{
             glm::vec3 translation{}; //position offset, this will be used to move things up and down
             glm::vec3 scale{1.f,1.f,1.f};
-            glm::vec3 rotation;
+            glm::vec3 rotation{};
             /**
-             * WARNING, THIS SYSTEM IS LESS EFFICIENT THAN CREATING YOUR OWN FUNCTION WITH EULER SYSTEM
+             * WARNING, THIS FUNCTION IS LESS EFFICIENT THAN CREATING YOUR OWN FUNCTION WITH EULER SYSTEM
             //Euler Angles rotation system
 
             //MAtrix corresponds to translate*Ry*Rx*Rz*scale transformation

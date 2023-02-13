@@ -1,7 +1,7 @@
 #pragma once
 
-#include "../kate_game_object.hpp"
-#include "../kate_window.hpp"
+#include "kate_game_object.hpp"
+#include "kate_window.hpp"
 
 namespace kate{
     class KeyboardInput{
