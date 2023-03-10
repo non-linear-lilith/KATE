@@ -4,9 +4,6 @@
 #include <iostream>
 #include <stdexcept>
 
-#ifndef ENGINE_DIR
-#define ENGINE_DIR "../include"
-#endif
 
 int main() {
   kate::FirstApp app{};

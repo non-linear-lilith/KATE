@@ -3,10 +3,10 @@
 
 #define TINYOBJLOADER_IMPLEMENTATION
 #include <tiny_obj_loader.h>
+
 #define GLM_ENABLE_EXPERIMENTAL
 #include <glm/gtx/hash.hpp>
 
-#include <iostream>
 #include <cassert>
 #include <cstring>
 #include <unordered_map>
@@ -42,8 +42,6 @@ namespace kate{
         Builder builder{}; 
 
         builder.loadModel(filepath);
-        std::cout<<filepath<<":\n";
-        std::cout<<"Vertex Count: "<<builder.vertices.size()<<"\n";
 
         return std::make_unique<KATEModel>(device,builder);
     }
@@ -135,7 +133,9 @@ namespace kate{
         return attributesDescriptions; */
         return {
             {0,0,VK_FORMAT_R32G32B32_SFLOAT,offsetof(Vertex,position)},
-            {1,0,VK_FORMAT_R32G32B32_SFLOAT,offsetof(Vertex,color)}
+            {1,0,VK_FORMAT_R32G32B32_SFLOAT,offsetof(Vertex,color)},
+            {2,0,VK_FORMAT_R32G32B32_SFLOAT,offsetof(Vertex,normal)},
+            {3,0,VK_FORMAT_R32G32_SFLOAT,offsetof(Vertex,uv)}
             };
     }
     void KATEModel::Builder::loadModel(const std::string &filepath){
@@ -162,17 +162,13 @@ namespace kate{
                         attrib.vertices[3*index.vertex_index+2]
                     }; 
 
-                    auto colorIndex = 3*index.vertex_index+2;
-                    if(colorIndex<attrib.colors.size()){
-                        vertex.color={
-                        attrib.colors[colorIndex - 2],
-                        attrib.colors[colorIndex - 1],
-                        attrib.colors[colorIndex - 0]
-                        };
-                    } 
-                    else{
-                        vertex.color={1.f,1.f,1.f}; //set default color
-                    }
+
+                    vertex.color={
+                    attrib.colors[3*index.vertex_index+0],
+                    attrib.colors[3*index.vertex_index+1],
+                    attrib.colors[3*index.vertex_index+2]
+                    };
+
                 }
                 if(index.normal_index>=0){
                     vertex.normal = {

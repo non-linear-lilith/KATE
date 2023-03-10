@@ -7,6 +7,9 @@
 #include <unordered_set>
 #include <algorithm>
 
+
+
+
 #ifndef ENGINE_DIR
 #define ENGINE_DIR "../include"
 #endif
@@ -14,7 +17,7 @@
 namespace kate {
 
 // local callback functions
-    
+
     static VKAPI_ATTR VkBool32 VKAPI_CALL debugCallback(VkDebugUtilsMessageSeverityFlagBitsEXT messageSeverity,VkDebugUtilsMessageTypeFlagsEXT messageType,const VkDebugUtilsMessengerCallbackDataEXT *pCallbackData,void *pUserData) {
         std::cerr << "|----------------------------------------------------------------------------------------------------|\n\n Validation Layer: " << pCallbackData->pMessage << std::endl;
 

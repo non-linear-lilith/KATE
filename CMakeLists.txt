@@ -60,7 +60,8 @@ message(STATUS "Using external/tinyobjloader")
 set(TINYOBJ_PATH external/tinyobjloader)
 message(STATUS "Using external/freetype")
 set(FREETYPE_PATH external/freetype)
-
+message(STATUS "Using external/irrklang")
+set(IRRKLANG_PATH external/irrklang)
 
 file(GLOB_RECURSE SOURCES ${PROJECT_SOURCE_DIR}/src/*.cpp)
 
@@ -89,6 +90,7 @@ if (WIN32)
     ${Vulkan_INCLUDE_DIRS}
     ${TINYOBJ_PATH}
     ${FREETYPE_PATH}
+    ${IRRKLANG_PATH}
     ${GLFW_INCLUDE_DIRS}
     ${GLM_PATH}
     )
@@ -104,6 +106,8 @@ elseif (UNIX)
     target_include_directories(${PROJECT_NAME} PUBLIC
       ${PROJECT_SOURCE_DIR}/src
       ${TINYOBJ_PATH}
+      ${FREETYPE_PATH}
+      ${IRRKLANG_PATH}
     )
     target_link_libraries(${PROJECT_NAME} glfw ${Vulkan_LIBRARIES})
 endif()
