@@ -11,6 +11,8 @@
 #include <cassert>
 #include <stdexcept>
 
+#include <iostream>
+
 #ifndef ENGINE_DIR
 #define ENGINE_DIR "../include"
 #endif
@@ -18,7 +20,7 @@ namespace kate {
 
   struct SimplePushConstantData {
     glm::mat4 transform{1.f};
-    alignas(16) glm::vec3 color;
+    glm::mat4 normalMatrix{1.f};
   };
 
   SimpleRenderSystem::SimpleRenderSystem(KATEDevice& device, VkRenderPass renderPass) : app_Device{device} {
@@ -54,7 +56,11 @@ namespace kate {
     KATEPipeline::defaultPipelineConfigInfo(pipelineConfig);
     pipelineConfig.renderPass = renderPass;
     pipelineConfig.pipelineLayout = pipelineLayout;
-    app_Pipeline = std::make_unique<KATEPipeline>(app_Device,"shaders/simple_shader.vert.spv","shaders/simple_shader.frag.spv",pipelineConfig);
+    app_Pipeline = std::make_unique<KATEPipeline>(app_Device,"data/shaders/simple_shader.vert.spv","data/shaders/simple_shader.frag.spv",pipelineConfig);
+    std::cout << "-----------------------------------------------------------------------------------" << std::endl;
+    std::cout << "Pipeline Succesfully created and Shaders succesfully built from the files"<< "data/shaders/simple_shader.vert.spv" << " and " << "data/shaders/simple_shader.frag.spv" << std::endl;
+    std::cout << "-----------------------------------------------------------------------------------" << std::endl;
+
   }
 
   void SimpleRenderSystem::renderGameObjects(VkCommandBuffer commandBuffer, std::vector<KATEGameObject> &gameObjects, const KATECamera& camera ){
@@ -68,8 +74,9 @@ namespace kate {
       //obj.transform.rotation.x = glm::mod(obj.transform.rotation.x + 0.01f, glm::two_pi<float>()); //rotates at x axis
 
       SimplePushConstantData push{}; 
-      push.color = obj.color;
-      push.transform = projectionView*obj.transform.mat4();
+      auto modelMatrix = obj.transform.mat4();
+      push.transform = projectionView*modelMatrix;
+      push.normalMatrix = obj.transform.normalMatrix();
 
       vkCmdPushConstants(commandBuffer,pipelineLayout,VK_SHADER_STAGE_VERTEX_BIT | VK_SHADER_STAGE_FRAGMENT_BIT,0,sizeof(SimplePushConstantData),&push);
       obj.model->bind(commandBuffer);

@@ -112,6 +112,7 @@ namespace kate{
         createInfo.sType = VK_STRUCTURE_TYPE_SHADER_MODULE_CREATE_INFO;
         createInfo.codeSize = code.size();
         createInfo.pCode = reinterpret_cast<const uint32_t*>(code.data());
+        
         if(vkCreateShaderModule(user_Device.device(),&createInfo,nullptr,shaderModule)!= VK_SUCCESS){
             throw std::runtime_error(" \x1B[31m----------FATAL ERROR----------\n Failed to create shader Module\033[0m ");
         }

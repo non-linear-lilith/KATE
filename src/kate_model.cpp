@@ -1,5 +1,5 @@
-#include "kate_model.hpp"
-#include "kate_hash.hpp"
+#include <kate_model.hpp>
+#include <kate_hash.hpp>
 
 #define TINYOBJLOADER_IMPLEMENTATION
 #include <tiny_obj_loader.h>
@@ -64,6 +64,7 @@ namespace kate{
 
         vkDestroyBuffer(ptrAppDevice.device(),stagingBuffer,nullptr);
         vkFreeMemory(ptrAppDevice.device(),stagingBufferMemory,nullptr);
+        assert("Vertex Buffer Created Succesfully\n");
     }
 
     void KATEModel::createIndexBuffers(const std::vector<uint32_t> &indices){
@@ -162,11 +163,10 @@ namespace kate{
                         attrib.vertices[3*index.vertex_index+2]
                     }; 
 
-
                     vertex.color={
-                    attrib.colors[3*index.vertex_index+0],
-                    attrib.colors[3*index.vertex_index+1],
-                    attrib.colors[3*index.vertex_index+2]
+                        attrib.colors[3*index.vertex_index+0],
+                        attrib.colors[3*index.vertex_index+1],
+                        attrib.colors[3*index.vertex_index+2]
                     };
 
                 }

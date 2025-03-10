@@ -33,5 +33,6 @@ namespace kate{
             
             KATERenderer appRenderer{user_Window,app_Device};
             std::vector<KATEGameObject> gameObjects;
+            
     };
 }

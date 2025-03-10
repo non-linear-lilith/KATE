@@ -4,59 +4,31 @@
 
 #include <glm/gtc/matrix_transform.hpp>
 namespace kate{
+    struct TransformComponent{
+        
+        glm::vec3 translation{}; // 3D traslation of the object with a x,y,z coordinate
+        glm::vec3 scale{1.f,1.f,1.f}; // 3D scale of the object with a x,y,z coordinate
+        glm::vec3 rotation{}; // 3D rotation of the object with a x,y,z coordinate. //@note I should insted use 2D for rotation using a normaliced vector and 2 angles or a quaternion
+        /**
+         * @param none
+         * @brief Fenerates a 4x4 matrix from the translation, scale and rotation values of the object to be used in the vertex shader
+         *  it uses the rotation values to generate a rotation matrix (eulers angles) and then multiplies it with the scale and translation matrices
+         * @return A 4x4 matrix in the form of a glm::mat4
+         * @note I should use quaternions instead of euler angles for rotation
+         */
+        glm::mat4 mat4();
+        /**
+         * @param none
+         * @brief Fenerates a 3x3 matrix from the rotation values of the object to be used in the vertex shader
+         *  it uses the rotation values to generate a rotation matrix (eulers angles)
+         * @return A 3x3 matrix in the form of a glm::mat3
+         * @note I should use quaternions instead of euler angles for rotation
+         */
+        glm::mat3 normalMatrix();
+    };
+
     class KATEGameObject{
-        struct TransformComponent{
-            glm::vec3 translation{}; //position offset, this will be used to move things up and down
-            glm::vec3 scale{1.f,1.f,1.f};
-            glm::vec3 rotation{};
-            /**
-             * WARNING, THIS FUNCTION IS LESS EFFICIENT THAN CREATING YOUR OWN FUNCTION WITH EULER SYSTEM
-            //Euler Angles rotation system
-
-            //MAtrix corresponds to translate*Ry*Rx*Rz*scale transformation
-            //Rotation convention uses Tait-Bryan angles with axis order Y(1),X(2),Z(3)
-            glm::mat4 mat4(){
-                auto transform = glm::translate(glm::mat4{1.f},translation);
-
-                transform = glm::rotate(transform,rotation.y,{0.f,1.f,0.f});
-                transform = glm::rotate(transform,rotation.x,{1.f,0.f,0.f});
-                transform = glm::rotate(transform,rotation.z,{0.f,0.f,1.f});
-
-                transform = glm::scale(transform,scale);
-                
-                return transform;
-            } **/
-            glm::mat4 mat4() {
-                const float c3 = glm::cos(rotation.z);
-                const float s3 = glm::sin(rotation.z);
-                const float c2 = glm::cos(rotation.x);
-                const float s2 = glm::sin(rotation.x);
-                const float c1 = glm::cos(rotation.y);
-                const float s1 = glm::sin(rotation.y);
-                return glm::mat4{
-                    {
-                        scale.x * (c1 * c3 + s1 * s2 * s3),
-                        scale.x * (c2 * s3),
-                        scale.x * (c1 * s2 * s3 - c3 * s1),
-                        0.0f,
-                    },
-                    {
-                        scale.y * (c3 * s1 * s2 - c1 * s3),
-                        scale.y * (c2 * c3),
-                        scale.y * (c1 * c3 * s2 + s1 * s3),
-                        0.0f,
-                    },
-                    {
-                        scale.z * (c2 * s1),
-                        scale.z * (-s2),
-                        scale.z * (c1 * c2),
-                        0.0f,
-                    },
-                    {translation.x, translation.y, translation.z, 1.0f}
-                };
-            }
-        };
-
+        
         public:
             using id_t = unsigned int;
 

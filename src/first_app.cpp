@@ -1,17 +1,17 @@
-#include "first_app.hpp"
-#include "kate_camera.hpp"
-#include "simple_render_system.hpp"
+#include <first_app.hpp>
+#include <kate_camera.hpp>
+#include <simple_render_system.hpp>
 #include "input/keyboard_input.hpp"
 
 //external libs
 #include <irrklang/include/irrKlang.h>
-
 #include <ft2build.h>
 #include FT_FREETYPE_H
 
 //glm libs
 #define GLM_FORCE_RADIANS
 #define GLM_FORCE_DEPTH_ZERO_TO_ONE
+
 
 #include <glm/gtc/constants.hpp>
 #include <glm/glm.hpp>
@@ -21,7 +21,6 @@
 #include <chrono>
 #include <iostream>
 #include <stdexcept>
-#include <unistd.h>
 #include <string.h>
 
 
@@ -39,6 +38,7 @@ namespace kate{
 
 
     void FirstApp::run() {
+
         static float accumulated_frame_time = 0; //Time of frames accumulated per second to be used for the frame counter
         static uint16_t frame_counter = 0;// Number of frames that are displayed per second
 
@@ -60,9 +60,8 @@ namespace kate{
 
             currentTime = newTime;
             frameTime = glm::min(frameTime,MAX_FRAME_TIME);
-            std::cout<<1.f/frameTime<<"FPS\n";
-                //glfwGetCursorPos(user_Window.getGLFWWindow(),&xpos,&ypos);  ss
-                //std::cout<<"x:"<<xpos<<"| y:"<<ypos<<"\n";
+                glfwGetCursorPos(user_Window.getGLFWWindow(),&xpos,&ypos); 
+                std::cout<<"x:"<<xpos<<"| y:"<<ypos<<"               "<<1.f/frameTime<<"FPS"<<"\r";
 
             cameraController.moveInPlaneXZ(user_Window.getGLFWWindow(),frameTime,viewerObject);
             camera.setViewYXZ(viewerObject.transform.translation,viewerObject.transform.rotation);
@@ -83,9 +82,16 @@ namespace kate{
             }
             vkDeviceWaitIdle(app_Device.device());
     }
-
+    /**
+     * @brief Load every game object to be rendered using the paths to the models into the engine
+     * 
+     * Load the game objects to be rendered
+     * 
+     * @return void
+     * 
+     */
     void FirstApp::loadGameObjects(){
-            std::shared_ptr<KATEModel> rat_model = KATEModel::createModelFromFile(app_Device,"../data/models/rat.obj");
+            std::shared_ptr<KATEModel> rat_model = KATEModel::createModelFromFile(app_Device,"data/models/rat.obj");
 
             auto rat = KATEGameObject::createGameObject();
             rat.model = rat_model; 
@@ -93,8 +99,9 @@ namespace kate{
             rat.transform.rotation = {0.f,glm::pi<float>()/2.f,glm::pi<float>()};
             rat.transform.scale = glm::vec3(0.5f);
             gameObjects.push_back(std::move(rat));
-            std::cout<<rat.getId();
-
+            //std::cout<<rat.getId();
+            std::cout<<"rat loaded\n";
+            auto rat2 = KATEGameObject::createGameObject();
             }
 
 }

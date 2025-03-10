@@ -1,0 +1,1 @@
+set(VULKAN_SDK_PATH  "C:/VulkanSDK/**")

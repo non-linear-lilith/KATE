@@ -1,4 +1,4 @@
-#include "input/keyboard_input.hpp"
+#include <input/keyboard_input.hpp>
 
 #include <cassert>
 #include <limits>
@@ -54,4 +54,5 @@ namespace kate{
             gameObject.transform.translation+= movespeed*dt*glm::normalize(moveDirection);
         }
     } 
+    
 }
