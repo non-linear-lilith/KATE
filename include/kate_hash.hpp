@@ -3,7 +3,7 @@
 
 namespace kate{
         /**
-     * @brief Combines the hash of multiple values into a single hash value
+     * @brief Combines the hash of multiple values into a single hash value, using the FNV-1a algorithm
      * 
      * @param seed  The seed value to start the hash 
      * @param v direcction in memory of the value to hash

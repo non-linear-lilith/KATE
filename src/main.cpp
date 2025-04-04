@@ -6,6 +6,7 @@
 
 
 int main() {
+
   kate::FirstApp app{};
 
   try {

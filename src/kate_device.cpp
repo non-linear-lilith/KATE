@@ -101,7 +101,7 @@ namespace kate {
 
         hasGflwRequiredInstanceExtensions();
     }
-
+    
     void KATEDevice::pickPhysicalDevice() {
         uint32_t deviceCount = 0;
         vkEnumeratePhysicalDevices(instance, &deviceCount, nullptr);
@@ -310,7 +310,7 @@ namespace kate {
             throw std::runtime_error("\x1B[31mNOT ALL REQUIRED EXTENSIONS ARE SUPPORTED\033[0m");
         }
         else{
-            std::cout<<"\x1B[32mEvery required extension is supported UWU\033[0m\n";
+            std::cout<<"\x1B[32mEvery required extension is supported C: \033[0m\n";
         }
     }
 

@@ -3,15 +3,11 @@
 #include <simple_render_system.hpp>
 #include "input/keyboard_input.hpp"
 
-//external libs
-#include <irrklang/include/irrKlang.h>
-#include <ft2build.h>
-#include FT_FREETYPE_H
 
 //glm libs
 #define GLM_FORCE_RADIANS
 #define GLM_FORCE_DEPTH_ZERO_TO_ONE
-
+    
 
 #include <glm/gtc/constants.hpp>
 #include <glm/glm.hpp>
@@ -30,6 +26,7 @@ namespace kate{
     
     FirstApp::FirstApp(){
         loadGameObjects();
+        
     }
     FirstApp::~FirstApp(){
     }
@@ -42,7 +39,7 @@ namespace kate{
         static float accumulated_frame_time = 0; //Time of frames accumulated per second to be used for the frame counter
         static uint16_t frame_counter = 0;// Number of frames that are displayed per second
 
-        SimpleRenderSystem simpleRenderSystem{app_Device, appRenderer.getSwapChainRenderPass()};
+        SimpleRenderSystem simpleRenderSystem{app_Device, appRenderer->getSwapChainRenderPass()};
         KATECamera camera{};
         //camera.setViewTarget(glm::vec3(-1.f,-1.f,1.f),glm::vec3(0.f,0.f,2.5f)); //set camera angle and position}
         auto viewerObject = KATEGameObject::createGameObject();
@@ -52,8 +49,32 @@ namespace kate{
         auto currentTime{std::chrono::high_resolution_clock::now()};
 
         static float rad = 0.f;
+
+
+
+
+        std::cout<<"\n\ntesting imgui\n\n";
         while (!user_Window.shouldClose()) {
             glfwPollEvents();
+
+            imguiManager->newFrame();
+
+            // Define your ImGui UI elements
+            ImGui::Begin("KATE Engine Debug");
+            ImGui::Text("Hello, ImGui!");
+            ImGui::End();
+            if (auto commandBuffer = appRenderer->beginFrame()) {
+                appRenderer->beginSwapChainRenderPass(commandBuffer);
+    
+
+    
+                // Render ImGui
+                imguiManager->render(commandBuffer);
+    
+                appRenderer->endSwapChainRenderPass(commandBuffer);
+                appRenderer->endFrame();
+            }
+
 
             auto newTime{std::chrono::high_resolution_clock::now()};
             float frameTime = std::chrono::duration<float,std::chrono::seconds::period>(newTime-currentTime).count();
@@ -65,15 +86,15 @@ namespace kate{
 
             cameraController.moveInPlaneXZ(user_Window.getGLFWWindow(),frameTime,viewerObject);
             camera.setViewYXZ(viewerObject.transform.translation,viewerObject.transform.rotation);
-            float aspect = appRenderer.getAspectRatio();
+            float aspect = appRenderer->getAspectRatio();
             //camera.setOrthographicProjection(-aspect,aspect,-1,1,-1,1); Orthograp hic projection
             camera.setPerspectiveProjection(glm::radians(50.f),aspect,0.1f,10.f); //set camera
-            if (auto commandBuffer = appRenderer.beginFrame()) {
+            if (auto commandBuffer = appRenderer->beginFrame()) {
                 
-                appRenderer.beginSwapChainRenderPass(commandBuffer);
+                appRenderer->beginSwapChainRenderPass(commandBuffer);
                 simpleRenderSystem.renderGameObjects(commandBuffer, gameObjects,camera);
-                appRenderer.endSwapChainRenderPass(commandBuffer);
-                appRenderer.endFrame();
+                appRenderer->endSwapChainRenderPass(commandBuffer);
+                appRenderer->endFrame();
             }
 
             gameObjects.at(0).transform.rotation = {0.f,glm::pi<float>()/2.f+rad,glm::pi<float>()};
@@ -91,8 +112,8 @@ namespace kate{
      * 
      */
     void FirstApp::loadGameObjects(){
+        
             std::shared_ptr<KATEModel> rat_model = KATEModel::createModelFromFile(app_Device,"data/models/rat.obj");
-
             auto rat = KATEGameObject::createGameObject();
             rat.model = rat_model; 
             rat.transform.translation = {0.f,.5f,4.f};

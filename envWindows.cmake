@@ -1,1 +1,1 @@
-set(VULKAN_SDK_PATH  "C:/VulkanSDK/**")
+set(VULKAN_SDK_PATH  "C:/VulkanSDK/1.4.304.0")

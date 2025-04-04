@@ -400,6 +400,7 @@ namespace kate {
     */
 
     std::cout << "Present mode: V-Sync" << std::endl;
+    std::cout << "windows size:" <<"x=>" <<windowExtent.width << "      y=>" << windowExtent.height << std::endl;
     return VK_PRESENT_MODE_FIFO_KHR;
   }
 
