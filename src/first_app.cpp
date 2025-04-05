@@ -60,30 +60,22 @@ namespace kate{
             imguiManager->newFrame();
 
             // Define your ImGui UI elements
-            ImGui::Begin("KATE Engine Debug");
-            ImGui::Text("Hello, ImGui!");
-            ImGui::End();
-            if (auto commandBuffer = appRenderer->beginFrame()) {
-                appRenderer->beginSwapChainRenderPass(commandBuffer);
-    
-
-    
-                // Render ImGui
-                imguiManager->render(commandBuffer);
-    
-                appRenderer->endSwapChainRenderPass(commandBuffer);
-                appRenderer->endFrame();
-            }
-
+            
 
             auto newTime{std::chrono::high_resolution_clock::now()};
             float frameTime = std::chrono::duration<float,std::chrono::seconds::period>(newTime-currentTime).count();
-
             currentTime = newTime;
             frameTime = glm::min(frameTime,MAX_FRAME_TIME);
-                glfwGetCursorPos(user_Window.getGLFWWindow(),&xpos,&ypos); 
-                std::cout<<"x:"<<xpos<<"| y:"<<ypos<<"               "<<1.f/frameTime<<"FPS"<<"\r";
+            glfwGetCursorPos(user_Window.getGLFWWindow(),&xpos,&ypos); 
 
+            ImGui::Begin("KATE Engine Debug");
+            ImGui::Text("Frame Time: %.3f ms",frameTime*1000.f);
+            ImGui::Text("FPS: %.3f",1.f/frameTime);
+            ImGui::TextColored(ImVec4(1.0f, 0.0f, 0.0f, 1.0f), "Mouse Position: ");
+            ImGui::Text("X: %.3f",xpos);
+            ImGui::Text("Y: %.3f",ypos);
+            ImGui::End();
+            
             cameraController.moveInPlaneXZ(user_Window.getGLFWWindow(),frameTime,viewerObject);
             camera.setViewYXZ(viewerObject.transform.translation,viewerObject.transform.rotation);
             float aspect = appRenderer->getAspectRatio();
@@ -92,8 +84,12 @@ namespace kate{
             if (auto commandBuffer = appRenderer->beginFrame()) {
                 
                 appRenderer->beginSwapChainRenderPass(commandBuffer);
+
                 simpleRenderSystem.renderGameObjects(commandBuffer, gameObjects,camera);
+                imguiManager->render(commandBuffer);
+
                 appRenderer->endSwapChainRenderPass(commandBuffer);
+
                 appRenderer->endFrame();
             }
 
