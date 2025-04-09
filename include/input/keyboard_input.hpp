@@ -13,7 +13,7 @@ namespace kate{
                 uint16_t moveBackward = GLFW_KEY_S;
                 uint16_t moveUp = GLFW_KEY_E;
                 uint16_t moveDown = GLFW_KEY_Q;
-
+                
                 uint16_t lookLeft = GLFW_KEY_LEFT;
                 uint16_t lookRight = GLFW_KEY_RIGHT;
                 uint16_t lookUp = GLFW_KEY_UP;

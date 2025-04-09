@@ -10,14 +10,14 @@
 #include <cassert>
 #include <cstring>
 #include <unordered_map>
-
+#include <iostream>
 namespace std{
     template <>
     struct hash<kate::KATEModel::Vertex>{
 
         size_t operator()(kate::KATEModel::Vertex const &vertex) const {
             size_t seed = 0;
-            kate::hashCombine(seed,vertex.position,vertex.color,vertex.color,vertex.uv);
+            kate::hashFNV1A(seed,vertex.position,vertex.color,vertex.color,vertex.uv);
             return seed;
 
         }
@@ -52,7 +52,7 @@ namespace kate{
         VkDeviceSize bufferSize = sizeof(vertices[0])*vertexCount;
         VkBuffer stagingBuffer;
         VkDeviceMemory stagingBufferMemory;
-
+        std::cout<<"Vertex Count: "<<vertexCount<<std::endl;
         ptrAppDevice.createBuffer(bufferSize,VK_BUFFER_USAGE_TRANSFER_SRC_BIT,VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT,stagingBuffer,stagingBufferMemory);
         void *data;
         vkMapMemory(ptrAppDevice.device(),stagingBufferMemory,0,bufferSize,0,&data);

@@ -50,20 +50,16 @@ namespace kate{
 
         static float rad = 0.f;
 
-
-
-
-        std::cout<<"\n\ntesting imgui\n\n";
         while (!user_Window.shouldClose()) {
-            glfwPollEvents();
+            glfwPollEvents();    // Poll for events (keyboard, mouse, etc.)
 
-            imguiManager->newFrame();
+            imguiManager->newFrame(); // Start a new ImGui frame
 
             // Define your ImGui UI elements
             
 
-            auto newTime{std::chrono::high_resolution_clock::now()};
-            float frameTime = std::chrono::duration<float,std::chrono::seconds::period>(newTime-currentTime).count();
+            auto newTime{std::chrono::high_resolution_clock::now()}; // Get the current time
+            float frameTime = std::chrono::duration<float,std::chrono::seconds::period>(newTime-currentTime).count(); // Calculate the time since the last frame
             currentTime = newTime;
             frameTime = glm::min(frameTime,MAX_FRAME_TIME);
             glfwGetCursorPos(user_Window.getGLFWWindow(),&xpos,&ypos); 
@@ -79,18 +75,18 @@ namespace kate{
             cameraController.moveInPlaneXZ(user_Window.getGLFWWindow(),frameTime,viewerObject);
             camera.setViewYXZ(viewerObject.transform.translation,viewerObject.transform.rotation);
             float aspect = appRenderer->getAspectRatio();
-            //camera.setOrthographicProjection(-aspect,aspect,-1,1,-1,1); Orthograp hic projection
-            camera.setPerspectiveProjection(glm::radians(50.f),aspect,0.1f,10.f); //set camera
+            //camera.setOrthographicProjection(-aspect,aspect,-1,1,-1,1); Orthographic projection
+            camera.setPerspectiveProjection(glm::radians(50.f),aspect,0.1f,10.f); //set camera in perspective projections
             if (auto commandBuffer = appRenderer->beginFrame()) {
                 
-                appRenderer->beginSwapChainRenderPass(commandBuffer);
+                appRenderer->beginSwapChainRenderPass(commandBuffer); // begin render pass
 
-                simpleRenderSystem.renderGameObjects(commandBuffer, gameObjects,camera);
-                imguiManager->render(commandBuffer);
+                simpleRenderSystem.renderGameObjects(commandBuffer, gameObjects,camera); // render game objects
+                imguiManager->render(commandBuffer); // render imgui
 
-                appRenderer->endSwapChainRenderPass(commandBuffer);
+                appRenderer->endSwapChainRenderPass(commandBuffer); // end render pass
 
-                appRenderer->endFrame();
+                appRenderer->endFrame(); // end frame
             }
 
             gameObjects.at(0).transform.rotation = {0.f,glm::pi<float>()/2.f+rad,glm::pi<float>()};
@@ -99,6 +95,10 @@ namespace kate{
             }
             vkDeviceWaitIdle(app_Device.device());
     }
+
+
+
+    
     /**
      * @brief Load every game object to be rendered using the paths to the models into the engine
      * 
