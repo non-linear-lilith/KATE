@@ -1,6 +1,6 @@
 #pragma once
 
-#include "kate_window.hpp"
+#include <kate_window.hpp>
 
 // std lib headers
 #include <string>
@@ -114,4 +114,4 @@ namespace kate {
             const std::vector<const char *> deviceExtensions = {VK_KHR_SWAPCHAIN_EXTENSION_NAME};
     };
 
-}  // namespace lve
+}  // namespace kate

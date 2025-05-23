@@ -13,38 +13,14 @@ KATEImGuiManager::KATEImGuiManager(
 }
 
 KATEImGuiManager::~KATEImGuiManager() {
-    vkDestroyDescriptorPool(kateDevice.device(), descriptorPool, nullptr);
     ImGui_ImplVulkan_Shutdown();
     ImGui_ImplGlfw_Shutdown();
     ImGui::DestroyContext();
 
-
-    VkAttachmentDescription colorAttachment = {};
-    //colorAttachment.format = swapChainImageFormat;  // Format of the swapchain images
-    colorAttachment.samples = VK_SAMPLE_COUNT_1_BIT;
-    colorAttachment.loadOp = VK_ATTACHMENT_LOAD_OP_CLEAR;
-    colorAttachment.storeOp = VK_ATTACHMENT_STORE_OP_STORE;
-    colorAttachment.stencilLoadOp = VK_ATTACHMENT_LOAD_OP_DONT_CARE;
-    colorAttachment.stencilStoreOp = VK_ATTACHMENT_STORE_OP_DONT_CARE;
-    colorAttachment.initialLayout = VK_IMAGE_LAYOUT_UNDEFINED;
-    colorAttachment.finalLayout = VK_IMAGE_LAYOUT_PRESENT_SRC_KHR;
-
-    VkAttachmentReference colorAttachmentRef = {};
-    colorAttachmentRef.attachment = 0;
-    colorAttachmentRef.layout = VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL;
-
-    VkSubpassDescription subpass = {};
-    subpass.pipelineBindPoint = VK_PIPELINE_BIND_POINT_GRAPHICS;
-    subpass.colorAttachmentCount = 1;
-    subpass.pColorAttachments = &colorAttachmentRef;
-
-    VkRenderPassCreateInfo renderPassInfo = {};
-    renderPassInfo.sType = VK_STRUCTURE_TYPE_RENDER_PASS_CREATE_INFO;
-    renderPassInfo.attachmentCount = 1;
-    renderPassInfo.pAttachments = &colorAttachment;
-    renderPassInfo.subpassCount = 1;
-    renderPassInfo.pSubpasses = &subpass;
-
+    if (descriptorPool != VK_NULL_HANDLE) {
+        vkDestroyDescriptorPool(kateDevice.device(), descriptorPool, nullptr);
+        descriptorPool = VK_NULL_HANDLE;  // Mark as destroyed
+    }
 }
 
 void KATEImGuiManager::init() {
@@ -106,9 +82,11 @@ void KATEImGuiManager::createDescriptorPool() {
     pool_info.poolSizeCount = static_cast<uint32_t>(std::size(pool_sizes));
     pool_info.pPoolSizes = pool_sizes;
 
-    if (vkCreateDescriptorPool(kateDevice.device(), &pool_info, nullptr, &descriptorPool) != VK_SUCCESS) {
-        throw std::runtime_error("Failed to create ImGui descriptor pool!");
+    VkResult result = vkCreateDescriptorPool(kateDevice.device(), &pool_info, nullptr, &descriptorPool);
+    if (result != VK_SUCCESS) {
+        throw std::runtime_error("Failed to create descriptor pool for ImGui: " + std::to_string(result));
     }
+
 }
 
 void KATEImGuiManager::newFrame() {
@@ -123,3 +101,34 @@ void KATEImGuiManager::render(VkCommandBuffer commandBuffer) {
 }
 
 } // namespace kate
+
+/*
+    VkAttachmentDescription colorAttachment = {};
+    //colorAttachment.format = swapChainImageFormat;  // Format of the swapchain images
+    colorAttachment.samples = VK_SAMPLE_COUNT_1_BIT;
+    colorAttachment.loadOp = VK_ATTACHMENT_LOAD_OP_CLEAR;
+    colorAttachment.storeOp = VK_ATTACHMENT_STORE_OP_STORE;
+    colorAttachment.stencilLoadOp = VK_ATTACHMENT_LOAD_OP_DONT_CARE;
+    colorAttachment.stencilStoreOp = VK_ATTACHMENT_STORE_OP_DONT_CARE;
+    colorAttachment.initialLayout = VK_IMAGE_LAYOUT_UNDEFINED;
+    colorAttachment.finalLayout = VK_IMAGE_LAYOUT_PRESENT_SRC_KHR;
+
+    VkAttachmentReference colorAttachmentRef = {};
+    colorAttachmentRef.attachment = 0;
+    colorAttachmentRef.layout = VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL;
+
+    VkSubpassDescription subpass = {};
+    subpass.pipelineBindPoint = VK_PIPELINE_BIND_POINT_GRAPHICS;
+    subpass.colorAttachmentCount = 1;
+    subpass.pColorAttachments = &colorAttachmentRef;
+
+    VkRenderPassCreateInfo renderPassInfo = {};
+    renderPassInfo.sType = VK_STRUCTURE_TYPE_RENDER_PASS_CREATE_INFO;
+    renderPassInfo.attachmentCount = 1;
+    renderPassInfo.pAttachments = &colorAttachment;
+    renderPassInfo.subpassCount = 1;
+    renderPassInfo.pSubpasses = &subpass;
+
+
+
+*/

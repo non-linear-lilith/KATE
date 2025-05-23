@@ -63,11 +63,11 @@ namespace kate {
 
   }
 
-  void SimpleRenderSystem::renderGameObjects(VkCommandBuffer commandBuffer, std::vector<KATEGameObject> &gameObjects, const KATECamera& camera ){
+  void SimpleRenderSystem::renderGameObjects(FrameInfo& frameInfo,std::vector<KATEGameObject> &gameObjects){
 
-    app_Pipeline->bind(commandBuffer);
+    app_Pipeline->bind(frameInfo.commandBuffer);
 
-    auto projectionView = camera.getProjection()*camera.getView();
+    auto projectionView = frameInfo.camera.getProjection()*frameInfo.camera.getView();
 
     for (auto& obj : gameObjects) {
       //obj.transform.rotation.y = glm::mod(obj.transform.rotation.y + 0.01f, glm::two_pi<float>()); //rotates at y axis
@@ -78,9 +78,9 @@ namespace kate {
       push.transform = projectionView*modelMatrix;
       push.normalMatrix = obj.transform.normalMatrix();
 
-      vkCmdPushConstants(commandBuffer,pipelineLayout,VK_SHADER_STAGE_VERTEX_BIT | VK_SHADER_STAGE_FRAGMENT_BIT,0,sizeof(SimplePushConstantData),&push);
-      obj.model->bind(commandBuffer);
-      obj.model->draw(commandBuffer);
+      vkCmdPushConstants(frameInfo.commandBuffer,pipelineLayout,VK_SHADER_STAGE_VERTEX_BIT | VK_SHADER_STAGE_FRAGMENT_BIT,0,sizeof(SimplePushConstantData),&push);
+      obj.model->bind(frameInfo.commandBuffer);
+      obj.model->draw(frameInfo.commandBuffer);
     }
   }
 

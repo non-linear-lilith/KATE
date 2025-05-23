@@ -2,7 +2,7 @@
 #include <kate_camera.hpp>
 #include <simple_render_system.hpp>
 #include "input/keyboard_input.hpp"
-
+#include <kate_buffer.hpp>
 
 //glm libs
 #define GLM_FORCE_RADIANS
@@ -19,11 +19,15 @@
 #include <stdexcept>
 #include <string.h>
 
-
 const float MAX_FRAME_TIME = 0.1f;
+const float pi2 = 6.28f;
 
 namespace kate{
-    
+    struct GlobalUbo{
+        glm::mat4 projectionView{1.f};
+        glm::vec3 lightDirection = glm::normalize(glm::vec3{1.f,-3.f,-1.f});
+    };
+
     FirstApp::FirstApp(){
         loadGameObjects();
         
@@ -32,9 +36,18 @@ namespace kate{
     }
     static double xpos, ypos;
 
-
-
     void FirstApp::run() {
+        std::vector<std::unique_ptr<KATEBuffer>> uboBuffers(KATESwapChain::MAX_FRAMES_IN_FLIGHT);
+        for (int i = 0; i < uboBuffers.size(); i++) {
+            uboBuffers[i] = std::make_unique<KATEBuffer>(
+                app_Device,
+                sizeof(GlobalUbo),
+                1,
+                VK_BUFFER_USAGE_UNIFORM_BUFFER_BIT,
+                VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT);
+                uboBuffers[i]->map();
+        }
+        
 
         static float accumulated_frame_time = 0; //Time of frames accumulated per second to be used for the frame counter
         static uint16_t frame_counter = 0;// Number of frames that are displayed per second
@@ -70,18 +83,38 @@ namespace kate{
             ImGui::TextColored(ImVec4(1.0f, 0.0f, 0.0f, 1.0f), "Mouse Position: ");
             ImGui::Text("X: %.3f",xpos);
             ImGui::Text("Y: %.3f",ypos);
+            ImGui::Text("Camera Position: ");
+            ImGui::Text("X: %.3f",viewerObject.transform.translation.x);
+            ImGui::Text("Y: %.3f",viewerObject.transform.translation.y);
+            ImGui::Text("Z: %.3f",viewerObject.transform.translation.z);
+            ImGui::Text("Camera Rotation: ");
+            ImGui::Text("X: %.3f",viewerObject.transform.rotation.x);
+            ImGui::Text("Y: %.3f",viewerObject.transform.rotation.y);
+            ImGui::Text("Rat Rotation: ");
+            ImGui::Text("Angle: %.3f",rad);
             ImGui::End();
             
             cameraController.moveInPlaneXZ(user_Window.getGLFWWindow(),frameTime,viewerObject);
-            camera.setViewYXZ(viewerObject.transform.translation,viewerObject.transform.rotation);
+            camera.setViewYXZ2(viewerObject.transform.translation,viewerObject.transform.rotation);
             float aspect = appRenderer->getAspectRatio();
             //camera.setOrthographicProjection(-aspect,aspect,-1,1,-1,1); Orthographic projection
             camera.setPerspectiveProjection(glm::radians(50.f),aspect,0.1f,10.f); //set camera in perspective projections
             if (auto commandBuffer = appRenderer->beginFrame()) {
-                
+                int frameIndex = appRenderer->getFrameIndex();
+                FrameInfo frameInfo{
+                    frameIndex,
+                    frameTime,
+                    commandBuffer,
+                    camera
+                };
+                GlobalUbo ubo = {};
+                ubo.projectionView = camera.getProjection() * camera.getView();
+                uboBuffers[frameIndex]->writeToBuffer(&ubo, sizeof(ubo));//test
+                uboBuffers[frameIndex]->flush();
+
                 appRenderer->beginSwapChainRenderPass(commandBuffer); // begin render pass
 
-                simpleRenderSystem.renderGameObjects(commandBuffer, gameObjects,camera); // render game objects
+                simpleRenderSystem.renderGameObjects(frameInfo, gameObjects); // render game objects
                 imguiManager->render(commandBuffer); // render imgui
 
                 appRenderer->endSwapChainRenderPass(commandBuffer); // end render pass
@@ -90,10 +123,13 @@ namespace kate{
             }
 
             gameObjects.at(0).transform.rotation = {0.f,glm::pi<float>()/2.f+rad,glm::pi<float>()};
-        
-            rad=rad+0.06f;
+            float frecuency = 1.0f; // Frequency of the rotation in radians per second
+            rad += frecuency * frameTime; // Scale increment by frame time
+            if (rad >= pi2) {
+                rad -= pi2;
             }
-            vkDeviceWaitIdle(app_Device.device());
+        }
+        vkDeviceWaitIdle(app_Device.device());
     }
 
 
@@ -110,12 +146,22 @@ namespace kate{
     void FirstApp::loadGameObjects(){
         
             std::shared_ptr<KATEModel> rat_model = KATEModel::createModelFromFile(app_Device,"data/models/rat.obj");
+            std::shared_ptr<KATEModel> cube_model = KATEModel::createModelFromFile(app_Device,"data/models/cube.obj");
             auto rat = KATEGameObject::createGameObject();
+            auto cube = KATEGameObject::createGameObject();
+            cube.model = cube_model; //set the model of the game object to be rendered
+            cube.transform.translation = {0.f,1.f,4.f};
+            cube.transform.scale = {10.f,0.2f,10.f};
+            cube.color = {1.f,0.f,0.f};
             rat.model = rat_model; 
             rat.transform.translation = {0.f,.5f,4.f};
             rat.transform.rotation = {0.f,glm::pi<float>()/2.f,glm::pi<float>()};
             rat.transform.scale = glm::vec3(0.5f);
             gameObjects.push_back(std::move(rat));
+            gameObjects.push_back(std::move(cube));
+            gameObjects.at(0).model = rat_model; //set the model of the game object to be rendered
+            gameObjects.at(1).model = cube_model; //set the model of the game object to be rendered
+
             //std::cout<<rat.getId();
             std::cout<<"rat loaded\n";
             auto rat2 = KATEGameObject::createGameObject();

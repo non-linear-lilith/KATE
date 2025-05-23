@@ -18,7 +18,7 @@ public:
  * 
  * @param window current window used by vulkan
  * @param device the device is the physical device used by vulkan
- * @param renderPass this is the render pass used by vulkan
+ * @param renderPass this is the render pass used by vulkanaw
  * @param imageCount the number of images in the swap chain
  */
     KATEImGuiManager(

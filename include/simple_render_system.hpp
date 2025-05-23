@@ -4,6 +4,7 @@
 #include "kate_game_object.hpp"
 #include "kate_pipeline.hpp"
 #include "kate_camera.hpp"
+#include "kate_frame_info.hpp"
 // std
 #include <memory>
 #include <vector>
@@ -15,7 +16,7 @@ class SimpleRenderSystem {
     ~SimpleRenderSystem();
     SimpleRenderSystem(const SimpleRenderSystem &) = delete;
     SimpleRenderSystem &operator=(const SimpleRenderSystem &) = delete;
-    void renderGameObjects(VkCommandBuffer commandBuffer, std::vector<KATEGameObject> &gameObjects, const KATECamera& camera );
+    void renderGameObjects(FrameInfo& frameInfo,std::vector<KATEGameObject> &gameObjects);
 
   private:
     void createPipelineLayout();

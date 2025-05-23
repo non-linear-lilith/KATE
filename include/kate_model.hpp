@@ -1,6 +1,7 @@
 #pragma once
 
 #include "kate_device.hpp"
+#include <kate_buffer.hpp>
 
 #define GLM_FORCE_RADIANS
 #define GLM_FORCE_DEPTH_ZERO_TO_ONE
@@ -62,13 +63,11 @@ namespace kate{
             void createIndexBuffers(const std::vector<uint32_t> &indices);
             KATEDevice &ptrAppDevice;
             
-            VkBuffer vertexBuffer;
-            VkDeviceMemory vertexBufferMemory;
+            std::unique_ptr<KATEBuffer> vertexBuffer;
             uint32_t vertexCount;
 
             bool hasIndexBuffer = false;
-            VkBuffer indexBuffer;
-            VkDeviceMemory indexBufferMemory;
+            std::unique_ptr<KATEBuffer> indexBuffer;
             uint32_t indexCount;
     };
 }

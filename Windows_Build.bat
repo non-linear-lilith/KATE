@@ -42,18 +42,17 @@ SET links=/link /LIBPATH:"%VULKAN_SDK%\Lib" vulkan-1.lib /LIBPATH:"libs\GLFW" gl
 SET defines=/D DEBUG
 
 echo Building main...
-cl /Od /MD /Zi /EHcs %includes% %defines% /Fe"bin\KATE_TESTING.exe" "src\*.cpp" "src\input\keyboard_input.cpp" "external\ImGui\*.cpp" "external\ImGui\backends\imgui_impl_glfw.cpp" "external\ImGui\backends\imgui_impl_vulkan.cpp" %links% 
+cl /Od /MD /Zi /EHcs %includes% %defines% /Fo"build\\" /Fd"build\KATE.pdb" /Fe"bin\KATE_TESTING.exe" "src\*.cpp" "src\input\keyboard_input.cpp" "external\ImGui\*.cpp" "external\ImGui\backends\imgui_impl_glfw.cpp" "external\ImGui\backends\imgui_impl_vulkan.cpp" %links% 
     
 echo Main built.
 
 REM echo "Building dll..."
-REM cl /LD /Od /MD /Zi /EHcs %includes% %defines% /Fe"bin\kate_lib.dll" "src\*.cpp" "src\input\keyboard_input.cpp" %links% 
-REM #echo "Dll built."
+REM cl /LD /Od /MD /Zi /EHcs %includes% %defines% /Fo"build\\" /Fd"build\KATE.pdb" /Fe"bin\kate_lib.dll" "src\*.cpp" "src\input\keyboard_input.cpp" %links% 
+REM echo "Dll built."
 
-echo Cleaning up source folder...
-del *.obj
-del *.pdb
-
-
+REM No longer needed as obj files go to build folder
+REM echo Cleaning up source folder...
+REM del *.obj
+REM del *.pdb
 
 echo Build done.

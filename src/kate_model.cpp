@@ -29,13 +29,7 @@ namespace kate{
         createIndexBuffers(builder.indices);
     }
     KATEModel::~KATEModel(){
-        vkDestroyBuffer(ptrAppDevice.device(),vertexBuffer,nullptr);
-        vkFreeMemory(ptrAppDevice.device(),vertexBufferMemory,nullptr);
 
-        if(hasIndexBuffer){
-            vkDestroyBuffer(ptrAppDevice.device(),indexBuffer,nullptr);
-            vkFreeMemory(ptrAppDevice.device(),indexBufferMemory,nullptr);
-        }
     }
 
     std::unique_ptr<KATEModel> KATEModel::createModelFromFile(KATEDevice &device, const std::string& filepath){
@@ -50,20 +44,26 @@ namespace kate{
         vertexCount=static_cast<uint32_t>(vertices.size());
         assert(vertices.size()>=3 && "VERTEX COUNT NEEDS TO BE AT LEAST 3!!!");
         VkDeviceSize bufferSize = sizeof(vertices[0])*vertexCount;
-        VkBuffer stagingBuffer;
-        VkDeviceMemory stagingBufferMemory;
-        std::cout<<"Vertex Count: "<<vertexCount<<std::endl;
-        ptrAppDevice.createBuffer(bufferSize,VK_BUFFER_USAGE_TRANSFER_SRC_BIT,VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT,stagingBuffer,stagingBufferMemory);
-        void *data;
-        vkMapMemory(ptrAppDevice.device(),stagingBufferMemory,0,bufferSize,0,&data);
-        memcpy(data,vertices.data(),static_cast<size_t>(bufferSize));
-        vkUnmapMemory(ptrAppDevice.device(),stagingBufferMemory);
+        uint32_t vertexSize = sizeof(vertices[0]);
+        KATEBuffer stagingBuffer{
+            ptrAppDevice,
+            vertexSize,
+            vertexCount,
+            VK_BUFFER_USAGE_VERTEX_BUFFER_BIT | VK_BUFFER_USAGE_TRANSFER_SRC_BIT,
+            VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT
+        };
+        stagingBuffer.map();
+        stagingBuffer.writeToBuffer((void *)vertices.data(),bufferSize);
+        vertexBuffer = std::make_unique<KATEBuffer>(
+            ptrAppDevice,
+            vertexSize,
+            vertexCount,
+            VK_BUFFER_USAGE_VERTEX_BUFFER_BIT | VK_BUFFER_USAGE_TRANSFER_DST_BIT,
+            VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT
+        );
 
-        ptrAppDevice.createBuffer(bufferSize,VK_BUFFER_USAGE_VERTEX_BUFFER_BIT | VK_BUFFER_USAGE_TRANSFER_DST_BIT, VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT,vertexBuffer,vertexBufferMemory);
-        ptrAppDevice.copyBuffer(stagingBuffer,vertexBuffer,bufferSize);
+        ptrAppDevice.copyBuffer(stagingBuffer.getBuffer(),vertexBuffer->getBuffer(),bufferSize);
 
-        vkDestroyBuffer(ptrAppDevice.device(),stagingBuffer,nullptr);
-        vkFreeMemory(ptrAppDevice.device(),stagingBufferMemory,nullptr);
         assert("Vertex Buffer Created Succesfully\n");
     }
 
@@ -75,22 +75,25 @@ namespace kate{
         }
         
         VkDeviceSize bufferSize = sizeof(indices[0])*indexCount;
+        uint32_t indexSize = sizeof(indices[0]);
+        KATEBuffer stagingBuffer{
+            ptrAppDevice,
+            indexSize,
+            indexCount,
+            VK_BUFFER_USAGE_INDEX_BUFFER_BIT | VK_BUFFER_USAGE_TRANSFER_SRC_BIT,
+            VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT
+        };
+        stagingBuffer.map();
+        stagingBuffer.writeToBuffer((void *)indices.data(),bufferSize);
+        indexBuffer = std::make_unique<KATEBuffer>(
+            ptrAppDevice,
+            indexSize,
+            indexCount,
+            VK_BUFFER_USAGE_INDEX_BUFFER_BIT | VK_BUFFER_USAGE_TRANSFER_DST_BIT,
+            VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT
+        );
 
-        VkBuffer stagingBuffer;
-        VkDeviceMemory stagingBufferMemory;
-
-        ptrAppDevice.createBuffer(bufferSize,VK_BUFFER_USAGE_TRANSFER_SRC_BIT,VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT,stagingBuffer,stagingBufferMemory);
-        void *data;
-        vkMapMemory(ptrAppDevice.device(),stagingBufferMemory,0,bufferSize,0,&data);
-        memcpy(data,indices.data(),static_cast<size_t>(bufferSize));
-        vkUnmapMemory(ptrAppDevice.device(),stagingBufferMemory);
-
-        ptrAppDevice.createBuffer(bufferSize,VK_BUFFER_USAGE_INDEX_BUFFER_BIT | VK_BUFFER_USAGE_TRANSFER_DST_BIT, VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT,indexBuffer,indexBufferMemory);
-        
-        ptrAppDevice.copyBuffer(stagingBuffer,indexBuffer,bufferSize);
-
-        vkDestroyBuffer(ptrAppDevice.device(),stagingBuffer,nullptr);
-        vkFreeMemory(ptrAppDevice.device(),stagingBufferMemory,nullptr);
+        ptrAppDevice.copyBuffer(stagingBuffer.getBuffer(),indexBuffer->getBuffer(),bufferSize);
     }
     void KATEModel::draw(VkCommandBuffer commandBuffer){
         if(hasIndexBuffer){
@@ -102,12 +105,12 @@ namespace kate{
     }
         
     void KATEModel::bind(VkCommandBuffer commandBuffer){
-        VkBuffer buffers[]={vertexBuffer};
+        VkBuffer buffers[]={vertexBuffer->getBuffer()};
         VkDeviceSize offsets[]={0};
         vkCmdBindVertexBuffers(commandBuffer,0,1,buffers,offsets);
 
         if(hasIndexBuffer){
-            vkCmdBindIndexBuffer(commandBuffer,indexBuffer,0,VK_INDEX_TYPE_UINT32);
+            vkCmdBindIndexBuffer(commandBuffer,indexBuffer->getBuffer(),0,VK_INDEX_TYPE_UINT32);
         }
     }
     std::vector<VkVertexInputBindingDescription> KATEModel::Vertex::getBindingDescriptions(){
