@@ -7,7 +7,8 @@ namespace kate {
     struct FrameInfo{
         int frameIndex;
         float frameTime;
-        VkCommandBuffer commandBuffer;
-        KATECamera& camera;
+        VkCommandBuffer commandBuffer = VK_NULL_HANDLE;
+        KATECamera& camera ;
+        VkDescriptorSet globalDescriptorSet = VK_NULL_HANDLE;
     };
 } // namespace kate

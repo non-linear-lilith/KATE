@@ -1,9 +1,11 @@
 #pragma once
+
 #include "kate_window.hpp"
-#include "kate_device.hpp"
-#include "kate_renderer.hpp"
-#include "kate_game_object.hpp"
+#include "kate_renderer.hpp" 
+#include "kate_game_object.hpp" 
 #include "kate_imgui_manager.hpp"
+#include <kate_descriptors.hpp>
+#include <kate_device.hpp>
 
 #include <memory>
 #include <vector>
@@ -36,6 +38,7 @@ namespace kate{
             std::unique_ptr<KATERenderer> appRenderer = std::make_unique<KATERenderer>(user_Window, app_Device);
             std::unique_ptr<KATEImGuiManager> imguiManager  = std::make_unique<KATEImGuiManager>(user_Window, app_Device, appRenderer->getSwapChainRenderPass(),KATESwapChain::MAX_FRAMES_IN_FLIGHT);
 
+            std::unique_ptr<KATEDescriptorPool> globalPool{};
             std::vector<KATEGameObject> gameObjects;
             
     };

@@ -194,4 +194,7 @@ namespace kate{
             }
         }
     }
+    int KATEModel::getnumberOfVertices(){
+        return vertexCount;
+    }
 }

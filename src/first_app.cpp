@@ -29,6 +29,10 @@ namespace kate{
     };
 
     FirstApp::FirstApp(){
+        globalPool = KATEDescriptorPool::Builder(app_Device)
+        .setMaxSets(KATESwapChain::MAX_FRAMES_IN_FLIGHT)
+        .addPoolSize(VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER, KATESwapChain::MAX_FRAMES_IN_FLIGHT)
+        .build();
         loadGameObjects();
         
     }
@@ -44,15 +48,38 @@ namespace kate{
                 sizeof(GlobalUbo),
                 1,
                 VK_BUFFER_USAGE_UNIFORM_BUFFER_BIT,
-                VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT);
+                VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT);
                 uboBuffers[i]->map();
         }
-        
+        /** *
+         * Create a descriptor set layout for the global ubo 
+         * with a size of 1 and a type of uniform buffer. 
+         * Uniform buffers are used to pass data to the shaders. 
+         * 
+         * */
+        auto globalSetLayout = KATEDescriptorSetLayout::Builder(app_Device)
+            .addBinding(0, VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER, VK_SHADER_STAGE_VERTEX_BIT)
+            .build();
+
+        /** *
+         * Create a vector of descriptor sets for the global ubo
+         * with a size of KATESwapChain::MAX_FRAMES_IN_FLIGHT
+         * and a type of uniform buffer.
+         * The descriptor sets are used to pass data to the shaders.
+         * 
+         * */
+        std::vector<VkDescriptorSet> globalDescriptorSets(KATESwapChain::MAX_FRAMES_IN_FLIGHT);
+        for (int i = 0; i < globalDescriptorSets.size(); i++) {
+            auto bufferInfo = uboBuffers[i]->descriptorInfo();
+            KATEDescriptorWriter(*globalSetLayout, *globalPool)
+                .writeBuffer(0, &bufferInfo)
+                .build(globalDescriptorSets[i]);
+        }
 
         static float accumulated_frame_time = 0; //Time of frames accumulated per second to be used for the frame counter
         static uint16_t frame_counter = 0;// Number of frames that are displayed per second
-
-        SimpleRenderSystem simpleRenderSystem{app_Device, appRenderer->getSwapChainRenderPass()};
+        
+        SimpleRenderSystem simpleRenderSystem{app_Device, appRenderer->getSwapChainRenderPass(),globalSetLayout->getDescriptorSetLayout()}; // Create the render system
         KATECamera camera{};
         //camera.setViewTarget(glm::vec3(-1.f,-1.f,1.f),glm::vec3(0.f,0.f,2.5f)); //set camera angle and position}
         auto viewerObject = KATEGameObject::createGameObject();
@@ -105,7 +132,8 @@ namespace kate{
                     frameIndex,
                     frameTime,
                     commandBuffer,
-                    camera
+                    camera,
+                    globalDescriptorSets[frameIndex]
                 };
                 GlobalUbo ubo = {};
                 ubo.projectionView = camera.getProjection() * camera.getView();
@@ -163,7 +191,9 @@ namespace kate{
             gameObjects.at(1).model = cube_model; //set the model of the game object to be rendered
 
             //std::cout<<rat.getId();
-            std::cout<<"rat loaded\n";
+            std::cout<<"rat loaded with "<<rat_model->getnumberOfVertices()<<"vertices \n";
+            std::cout<<"cube loaded with "<<cube_model->getnumberOfVertices()<<"vertices \n";
+
             auto rat2 = KATEGameObject::createGameObject();
             }
 

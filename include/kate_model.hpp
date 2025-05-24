@@ -57,7 +57,7 @@ namespace kate{
              * If a index buffer is found, inserts a vulkan Command buffer into the gpu, draws a image into the GLFW from the GPU
             */
             void draw(VkCommandBuffer commandBuffer);
-
+            int getnumberOfVertices();
         private:
             void createVertexBuffers(const std::vector<Vertex> &vertices);
             void createIndexBuffers(const std::vector<uint32_t> &indices);
