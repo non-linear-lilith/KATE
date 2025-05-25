@@ -1,4 +1,3 @@
-#include <kate_window.hpp>
 #include <first_app.hpp>
 #include <cstdlib>
 #include <iostream>

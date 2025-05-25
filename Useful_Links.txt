@@ -1,2 +1,9 @@
-https://discourse.cmake.org/t/linking-a-lib-file-in-cmake/5515
+-[CMAKE docs]{https://discourse.cmake.org/t/linking-a-lib-file-in-cmake/5515}
 
+-[Vulkan Game Engine Tutorial by Brendan Gaela]{https://www.youtube.com/watch?v=Y9U9IE0gVHA&list=PL8327DO66nu9qYVKLDmdLW_84-yE4auCR}
+
+-[Development Setup by cakez]{https://www.youtube.com/watch?v=tRQ3zqCiKdQ }
+
+-[OPENGL programming Guide]{https://www.cs.utexas.edu/~fussell/courses/cs354/handouts/Addison.Wesley.OpenGL.Programming.Guide.8th.Edition.Mar.2013.ISBN.0321773039.pdf}
+
+-[learn opengl ]{https://learnopengl.com/book/learnopengl_book.pdf}

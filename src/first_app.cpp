@@ -25,7 +25,9 @@ const float pi2 = 6.28f;
 namespace kate{
     struct GlobalUbo{
         glm::mat4 projectionView{1.f};
-        glm::vec3 lightDirection = glm::normalize(glm::vec3{1.f,-3.f,-1.f});
+        glm::vec4 ambientLightColor{1.f,1.f,1.f,.02f}; // Ambient light color, white in this case {r,g,b,intensity}
+        glm::vec3 lightPositition{0.f,-1.3f,4.f}; // Light position in world space {x,y,z}
+        alignas(16) glm::vec4 lightColor{1.f,1.f,1.f,1.f}; // Light color {r,g,b,intensity}
     };
 
     FirstApp::FirstApp(){
@@ -119,7 +121,9 @@ namespace kate{
             ImGui::Text("Y: %.3f",viewerObject.transform.rotation.y);
             ImGui::Text("Rat Rotation: ");
             ImGui::Text("Angle: %.3f",rad);
+
             ImGui::End();
+            
             
             cameraController.moveInPlaneXZ(user_Window.getGLFWWindow(),frameTime,viewerObject);
             camera.setViewYXZ2(viewerObject.transform.translation,viewerObject.transform.rotation);
@@ -148,7 +152,9 @@ namespace kate{
                 appRenderer->endSwapChainRenderPass(commandBuffer); // end render pass
 
                 appRenderer->endFrame(); // end frame
+
             }
+            //make a slider for the light position in the y axis in imgui
 
             gameObjects.at(0).transform.rotation = {0.f,glm::pi<float>()/2.f+rad,glm::pi<float>()};
             float frecuency = 1.0f; // Frequency of the rotation in radians per second
@@ -174,25 +180,25 @@ namespace kate{
     void FirstApp::loadGameObjects(){
         
             std::shared_ptr<KATEModel> rat_model = KATEModel::createModelFromFile(app_Device,"data/models/rat.obj");
-            std::shared_ptr<KATEModel> cube_model = KATEModel::createModelFromFile(app_Device,"data/models/cube.obj");
+            std::shared_ptr<KATEModel> floor_model = KATEModel::createModelFromFile(app_Device,"data/models/quad.obj");
             auto rat = KATEGameObject::createGameObject();
-            auto cube = KATEGameObject::createGameObject();
-            cube.model = cube_model; //set the model of the game object to be rendered
-            cube.transform.translation = {0.f,1.f,4.f};
-            cube.transform.scale = {10.f,0.2f,10.f};
-            cube.color = {1.f,0.f,0.f};
+            auto floor = KATEGameObject::createGameObject();
+            floor.model = floor_model; //set the model of the game object to be rendered
+            floor.transform.translation = {0.f,1.f,4.f};
+            floor.transform.scale = {10.f,0.2f,10.f};
+            floor.color = {1.f,0.f,0.f};
             rat.model = rat_model; 
             rat.transform.translation = {0.f,.5f,4.f};
             rat.transform.rotation = {0.f,glm::pi<float>()/2.f,glm::pi<float>()};
             rat.transform.scale = glm::vec3(0.5f);
             gameObjects.push_back(std::move(rat));
-            gameObjects.push_back(std::move(cube));
+            gameObjects.push_back(std::move(floor));
             gameObjects.at(0).model = rat_model; //set the model of the game object to be rendered
-            gameObjects.at(1).model = cube_model; //set the model of the game object to be rendered
+            gameObjects.at(1).model = floor_model; //set the model of the game object to be rendered
 
             //std::cout<<rat.getId();
             std::cout<<"rat loaded with "<<rat_model->getnumberOfVertices()<<"vertices \n";
-            std::cout<<"cube loaded with "<<cube_model->getnumberOfVertices()<<"vertices \n";
+            std::cout<<"cube loaded with "<<floor_model->getnumberOfVertices()<<"vertices \n";
 
             auto rat2 = KATEGameObject::createGameObject();
             }
