@@ -14,15 +14,18 @@ class SimpleRenderSystem {
   public:
     SimpleRenderSystem(KATEDevice &device, VkRenderPass renderPass,VkDescriptorSetLayout globalSetLayout);
     ~SimpleRenderSystem();
+
     SimpleRenderSystem(const SimpleRenderSystem &) = delete;
     SimpleRenderSystem &operator=(const SimpleRenderSystem &) = delete;
-    void renderGameObjects(FrameInfo& frameInfo,std::vector<KATEGameObject> &gameObjects);
+    void renderGameObjects(FrameInfo& frameInfo);
 
   private:
     void createPipelineLayout(VkDescriptorSetLayout globalSetLayout);
     void createPipeline(VkRenderPass renderPass);
-    KATEDevice &app_Device;
+
+    KATEDevice &SRS_Device;
+
     std::unique_ptr<KATEPipeline> app_Pipeline ; 
-    VkPipelineLayout pipelineLayout = VK_NULL_HANDLE;
+    VkPipelineLayout pipelineLayout;
   };
 }

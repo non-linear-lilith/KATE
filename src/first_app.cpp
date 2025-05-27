@@ -26,8 +26,8 @@ namespace kate{
     struct GlobalUbo{
         glm::mat4 projectionView{1.f};
         glm::vec4 ambientLightColor{1.f,1.f,1.f,.02f}; // Ambient light color, white in this case {r,g,b,intensity}
-        glm::vec3 lightPositition{0.f,-1.3f,4.f}; // Light position in world space {x,y,z}
-        alignas(16) glm::vec4 lightColor{1.f,1.f,1.f,1.f}; // Light color {r,g,b,intensity}
+        glm::vec3 lightPositition{-1.f}; // Light position in world space {x,y,z}
+        alignas(16) glm::vec4 lightColor{1.f}; // Light color {r,g,b,intensity}
     };
 
     FirstApp::FirstApp(){
@@ -36,7 +36,6 @@ namespace kate{
         .addPoolSize(VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER, KATESwapChain::MAX_FRAMES_IN_FLIGHT)
         .build();
         loadGameObjects();
-        
     }
     FirstApp::~FirstApp(){
     }
@@ -44,6 +43,7 @@ namespace kate{
 
     void FirstApp::run() {
         std::vector<std::unique_ptr<KATEBuffer>> uboBuffers(KATESwapChain::MAX_FRAMES_IN_FLIGHT);
+
         for (int i = 0; i < uboBuffers.size(); i++) {
             uboBuffers[i] = std::make_unique<KATEBuffer>(
                 app_Device,
@@ -59,9 +59,10 @@ namespace kate{
          * Uniform buffers are used to pass data to the shaders. 
          * 
          * */
-        auto globalSetLayout = KATEDescriptorSetLayout::Builder(app_Device)
-            .addBinding(0, VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER, VK_SHADER_STAGE_VERTEX_BIT)
-            .build();
+        auto globalSetLayout = 
+            KATEDescriptorSetLayout::Builder(app_Device)
+                .addBinding(0, VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER, VK_SHADER_STAGE_ALL_GRAPHICS) // Binding 0 for uniform buffer
+                .build();
 
         /** *
          * Create a vector of descriptor sets for the global ubo
@@ -81,10 +82,15 @@ namespace kate{
         static float accumulated_frame_time = 0; //Time of frames accumulated per second to be used for the frame counter
         static uint16_t frame_counter = 0;// Number of frames that are displayed per second
         
-        SimpleRenderSystem simpleRenderSystem{app_Device, appRenderer->getSwapChainRenderPass(),globalSetLayout->getDescriptorSetLayout()}; // Create the render system
+        SimpleRenderSystem simpleRenderSystem{
+            app_Device, 
+            appRenderer->getSwapChainRenderPass(),
+            globalSetLayout->getDescriptorSetLayout()}; // Create the render system
         KATECamera camera{};
         //camera.setViewTarget(glm::vec3(-1.f,-1.f,1.f),glm::vec3(0.f,0.f,2.5f)); //set camera angle and position}
         auto viewerObject = KATEGameObject::createGameObject();
+        viewerObject.transform.translation.z = -2.5f;
+
         KeyboardInput cameraController;
         //glfwSetInputMode(user_Window.getGLFWWindow(), GLFW_CURSOR, GLFW_CURSOR_HIDDEN); //HIDE CURSOR  
         
@@ -121,7 +127,6 @@ namespace kate{
             ImGui::Text("Y: %.3f",viewerObject.transform.rotation.y);
             ImGui::Text("Rat Rotation: ");
             ImGui::Text("Angle: %.3f",rad);
-
             ImGui::End();
             
             
@@ -129,7 +134,7 @@ namespace kate{
             camera.setViewYXZ2(viewerObject.transform.translation,viewerObject.transform.rotation);
             float aspect = appRenderer->getAspectRatio();
             //camera.setOrthographicProjection(-aspect,aspect,-1,1,-1,1); Orthographic projection
-            camera.setPerspectiveProjection(glm::radians(50.f),aspect,0.1f,10.f); //set camera in perspective projections
+            camera.setPerspectiveProjection(glm::radians(50.f),aspect,0.1f,1000.f); //set camera in perspective projections
             if (auto commandBuffer = appRenderer->beginFrame()) {
                 int frameIndex = appRenderer->getFrameIndex();
                 FrameInfo frameInfo{
@@ -137,7 +142,8 @@ namespace kate{
                     frameTime,
                     commandBuffer,
                     camera,
-                    globalDescriptorSets[frameIndex]
+                    globalDescriptorSets[frameIndex],
+                    gameObjects 
                 };
                 GlobalUbo ubo = {};
                 ubo.projectionView = camera.getProjection() * camera.getView();
@@ -146,7 +152,7 @@ namespace kate{
 
                 appRenderer->beginSwapChainRenderPass(commandBuffer); // begin render pass
 
-                simpleRenderSystem.renderGameObjects(frameInfo, gameObjects); // render game objects
+                simpleRenderSystem.renderGameObjects(frameInfo); // render game objects
                 imguiManager->render(commandBuffer); // render imgui
 
                 appRenderer->endSwapChainRenderPass(commandBuffer); // end render pass
@@ -154,7 +160,6 @@ namespace kate{
                 appRenderer->endFrame(); // end frame
 
             }
-            //make a slider for the light position in the y axis in imgui
 
             gameObjects.at(0).transform.rotation = {0.f,glm::pi<float>()/2.f+rad,glm::pi<float>()};
             float frecuency = 1.0f; // Frequency of the rotation in radians per second
@@ -186,21 +191,21 @@ namespace kate{
             floor.model = floor_model; //set the model of the game object to be rendered
             floor.transform.translation = {0.f,1.f,4.f};
             floor.transform.scale = {10.f,0.2f,10.f};
-            floor.color = {1.f,0.f,0.f};
+
             rat.model = rat_model; 
             rat.transform.translation = {0.f,.5f,4.f};
             rat.transform.rotation = {0.f,glm::pi<float>()/2.f,glm::pi<float>()};
             rat.transform.scale = glm::vec3(0.5f);
-            gameObjects.push_back(std::move(rat));
-            gameObjects.push_back(std::move(floor));
-            gameObjects.at(0).model = rat_model; //set the model of the game object to be rendered
-            gameObjects.at(1).model = floor_model; //set the model of the game object to be rendered
+
+            gameObjects.emplace(rat.getId(),std::move(rat));
+            gameObjects.emplace(floor.getId(),std::move(floor));
+            std::cout<<"rat id: "<<rat.getId()<<"\n";
+            std::cout<<"floor id: "<<floor.getId()<<"\n";
 
             //std::cout<<rat.getId();
-            std::cout<<"rat loaded with "<<rat_model->getnumberOfVertices()<<"vertices \n";
-            std::cout<<"cube loaded with "<<floor_model->getnumberOfVertices()<<"vertices \n";
+            std::cout<<"rat loaded with "<<gameObjects.at(0).model->getnumberOfVertices()<<" vertices \n";
+            std::cout<<"cube loaded with "<<gameObjects.at(1).model->getnumberOfVertices()<<" vertices \n";
 
-            auto rat2 = KATEGameObject::createGameObject();
-            }
+        }
 
 }

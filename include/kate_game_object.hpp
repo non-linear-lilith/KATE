@@ -1,7 +1,7 @@
 #pragma once
 #include "kate_model.hpp"
 #include <memory>
-
+#include <unordered_map>
 #include <glm/gtc/matrix_transform.hpp>
 namespace kate{
     struct TransformComponent{
@@ -31,26 +31,26 @@ namespace kate{
         
         public:
             using id_t = unsigned int;
+            using Map = std::unordered_map<id_t, KATEGameObject>;
 
-            static KATEGameObject createGameObject(){
+            static KATEGameObject createGameObject() {
                 static id_t currentId = 0;
                 return KATEGameObject{currentId++};
             }
-            id_t getId(){
-                return id;
-            }
-            TransformComponent transform{};
-            std::shared_ptr<KATEModel>model{};
-            glm::vec3 color{};
 
-            KATEGameObject(const KATEGameObject&) = delete;
-            KATEGameObject &operator=(const KATEGameObject&&) = delete;
-            KATEGameObject(KATEGameObject&&) = default;
-            KATEGameObject &operator=(KATEGameObject&&) = default;
+            KATEGameObject(const KATEGameObject &) = delete;
+            KATEGameObject &operator=(const KATEGameObject &) = delete;
+            KATEGameObject(KATEGameObject &&) = default;
+            KATEGameObject &operator=(KATEGameObject &&) = default;
+
+            id_t getId() { return id; }
+
+            std::shared_ptr<KATEModel> model{};
+            glm::vec3 color{};
+            TransformComponent transform{};
 
         private:
-            KATEGameObject(id_t objId):id(objId){
-            }
+            KATEGameObject(id_t objId):id(objId){}
             id_t id;
     };
 }

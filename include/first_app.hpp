@@ -39,7 +39,7 @@ namespace kate{
             std::unique_ptr<KATEImGuiManager> imguiManager  = std::make_unique<KATEImGuiManager>(user_Window, app_Device, appRenderer->getSwapChainRenderPass(),KATESwapChain::MAX_FRAMES_IN_FLIGHT);
 
             std::unique_ptr<KATEDescriptorPool> globalPool{};
-            std::vector<KATEGameObject> gameObjects;
+            KATEGameObject::Map gameObjects;
             
     };
 }
