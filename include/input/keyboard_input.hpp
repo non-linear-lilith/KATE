@@ -18,8 +18,14 @@ namespace kate{
                 uint16_t lookRight = GLFW_KEY_RIGHT;
                 uint16_t lookUp = GLFW_KEY_UP;
                 uint16_t lookDown = GLFW_KEY_DOWN;
+
+                uint16_t move_forward = GLFW_KEY_I;
+                uint16_t move_backward = GLFW_KEY_K;
+                uint16_t move_left = GLFW_KEY_J;
+                uint16_t move_right = GLFW_KEY_L;
             };
             void moveInPlaneXZ(GLFWwindow* window, float dt, KATEGameObject& gameObject);
+            void movepos(GLFWwindow* window, float dt, KATEGameObject& gameObject);
             KeyMappings keys{};
             float movespeed{3.f};
             float lookSpeed{1.5f};

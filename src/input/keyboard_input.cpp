@@ -54,5 +54,22 @@ namespace kate{
             gameObject.transform.translation+= movespeed*dt*glm::normalize(moveDirection);
         }
     } 
-    
+    void KeyboardInput::movepos(GLFWwindow* window, float dt, KATEGameObject& gameObject){
+        glm::vec3 moveDirection{0.f};
+        if(glfwGetKey(window,keys.move_forward)==GLFW_PRESS) {
+            moveDirection.z +=1.f;
+        }
+        if(glfwGetKey(window,keys.move_backward)==GLFW_PRESS) {
+            moveDirection.z -=1.f;
+        }
+        if(glfwGetKey(window,keys.move_right)==GLFW_PRESS) {
+            moveDirection.x +=1.f;
+        }
+        if(glfwGetKey(window,keys.move_left)==GLFW_PRESS) {
+            moveDirection.x -=1.f;
+        }
+        if(glm::dot(moveDirection,moveDirection)>std::numeric_limits<float>::epsilon()){
+            gameObject.transform.translation+= movespeed*dt*glm::normalize(moveDirection);
+        }
+    }
 }

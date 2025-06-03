@@ -22,4 +22,4 @@ namespace kate{
             glm::mat4 projectionMatrix{1.f};
             glm::mat4 viewMatrix{1.f};
     };
-}
+}   

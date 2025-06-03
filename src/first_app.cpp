@@ -19,7 +19,7 @@
 #include <stdexcept>
 #include <string.h>
 
-const float MAX_FRAME_TIME = 0.1f;
+const float MAX_FRAME_TIME = 0.05f;
 const float pi2 = 6.28f;
 
 namespace kate{
@@ -27,7 +27,7 @@ namespace kate{
         glm::mat4 projectionView{1.f};
         glm::vec4 ambientLightColor{1.f,1.f,1.f,.02f}; // Ambient light color, white in this case {r,g,b,intensity}
         glm::vec3 lightPositition{-1.f}; // Light position in world space {x,y,z}
-        alignas(16) glm::vec4 lightColor{1.f}; // Light color {r,g,b,intensity}
+        alignas(16) glm::vec4 lightColor{1.f,1.f,1.f,16.f}; // Light color {r,g,b,intensity}
     };
 
     FirstApp::FirstApp(){
@@ -131,6 +131,7 @@ namespace kate{
             
             
             cameraController.moveInPlaneXZ(user_Window.getGLFWWindow(),frameTime,viewerObject);
+            cameraController.movepos(user_Window.getGLFWWindow(),frameTime,gameObjects.at(0)); // Move the rat object with the keyboard input
             camera.setViewYXZ2(viewerObject.transform.translation,viewerObject.transform.rotation);
             float aspect = appRenderer->getAspectRatio();
             //camera.setOrthographicProjection(-aspect,aspect,-1,1,-1,1); Orthographic projection
