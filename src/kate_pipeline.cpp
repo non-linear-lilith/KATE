@@ -72,21 +72,14 @@ namespace kate{
         shaderStages[1].pNext = nullptr;
         shaderStages[1].pSpecializationInfo = nullptr;
 
-        auto bindingDescriptions = KATEModel::Vertex::getBindingDescriptions();
-        auto attributeDescriptions = KATEModel::Vertex::getAttributesDescriptions();
-        VkPipelineVertexInputStateCreateInfo vertexInputInfo{};
-        vertexInputInfo.sType = VK_STRUCTURE_TYPE_PIPELINE_VERTEX_INPUT_STATE_CREATE_INFO;
-        vertexInputInfo.vertexAttributeDescriptionCount = static_cast<uint32_t>(attributeDescriptions.size());
-        vertexInputInfo.vertexBindingDescriptionCount = static_cast<uint32_t>(bindingDescriptions.size());
-        vertexInputInfo.pVertexAttributeDescriptions = attributeDescriptions.data();
-        vertexInputInfo.pVertexBindingDescriptions = bindingDescriptions.data();
+        // Use vertex input configuration from the pipeline config
 
 
         VkGraphicsPipelineCreateInfo pipelineInfo{};
         pipelineInfo.sType = VK_STRUCTURE_TYPE_GRAPHICS_PIPELINE_CREATE_INFO;
         pipelineInfo.stageCount = 2;
         pipelineInfo.pStages = shaderStages; 
-        pipelineInfo.pVertexInputState = &vertexInputInfo;
+        pipelineInfo.pVertexInputState = &pipeline_configuration_info.vertexInputInfo;
         pipelineInfo.pInputAssemblyState = &pipeline_configuration_info.inputAssemblyinfo;
         pipelineInfo.pViewportState = &pipeline_configuration_info.viewportInfo;
         pipelineInfo.pRasterizationState = &pipeline_configuration_info.rasterizationInfo;
@@ -119,6 +112,15 @@ namespace kate{
     }
 
     void KATEPipeline::defaultPipelineConfigInfo(PipelineConfigInfo& configInfo){
+        // Vertex Input Info - default to standard vertex layout
+        configInfo.bindingDescriptions = KATEModel::Vertex::getBindingDescriptions();
+        configInfo.attributeDescriptions = KATEModel::Vertex::getAttributesDescriptions();
+        configInfo.vertexInputInfo.sType = VK_STRUCTURE_TYPE_PIPELINE_VERTEX_INPUT_STATE_CREATE_INFO;
+        configInfo.vertexInputInfo.vertexAttributeDescriptionCount = static_cast<uint32_t>(configInfo.attributeDescriptions.size());
+        configInfo.vertexInputInfo.vertexBindingDescriptionCount = static_cast<uint32_t>(configInfo.bindingDescriptions.size());
+        configInfo.vertexInputInfo.pVertexAttributeDescriptions = configInfo.attributeDescriptions.data();
+        configInfo.vertexInputInfo.pVertexBindingDescriptions = configInfo.bindingDescriptions.data();
+
         //Assembly Info
         configInfo.inputAssemblyinfo.sType = VK_STRUCTURE_TYPE_PIPELINE_INPUT_ASSEMBLY_STATE_CREATE_INFO;
         configInfo.inputAssemblyinfo.topology = VK_PRIMITIVE_TOPOLOGY_TRIANGLE_LIST;

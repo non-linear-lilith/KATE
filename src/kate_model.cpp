@@ -17,7 +17,7 @@ namespace std{
 
         size_t operator()(kate::KATEModel::Vertex const &vertex) const {
             size_t seed = 0;
-            kate::hashFNV1A(seed,vertex.position,vertex.color,vertex.color,vertex.uv);
+            kate::hashFNV1A(seed,vertex.position,vertex.color,vertex.normal,vertex.uv);
             return seed;
 
         }
@@ -64,7 +64,7 @@ namespace kate{
 
         ptrAppDevice.copyBuffer(stagingBuffer.getBuffer(),vertexBuffer->getBuffer(),bufferSize);
 
-        assert("Vertex Buffer Created Succesfully\n");
+        // Vertex buffer created successfully - no assertion needed here since copyBuffer would throw on failure
     }
 
     void KATEModel::createIndexBuffers(const std::vector<uint32_t> &indices){

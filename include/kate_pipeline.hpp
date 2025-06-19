@@ -7,9 +7,13 @@
 namespace kate{
 
     struct PipelineConfigInfo {
+        PipelineConfigInfo() = default;
         PipelineConfigInfo(const PipelineConfigInfo&) = delete;
         PipelineConfigInfo& operator=(const PipelineConfigInfo&) = delete;
 
+        std::vector<VkVertexInputBindingDescription> bindingDescriptions{};
+        std::vector<VkVertexInputAttributeDescription> attributeDescriptions{};
+        VkPipelineVertexInputStateCreateInfo vertexInputInfo{};
         VkPipelineViewportStateCreateInfo viewportInfo;
         VkPipelineInputAssemblyStateCreateInfo inputAssemblyinfo;
         VkPipelineRasterizationStateCreateInfo rasterizationInfo;
@@ -19,8 +23,8 @@ namespace kate{
         VkPipelineDepthStencilStateCreateInfo depthStencilInfo;
         std::vector<VkDynamicState> dynamicStateEnables;
         VkPipelineDynamicStateCreateInfo dynamicStateInfo;
-        VkPipelineLayout pipelineLayout = nullptr;
-        VkRenderPass renderPass = nullptr;
+        VkPipelineLayout pipelineLayout = VK_NULL_HANDLE;
+        VkRenderPass renderPass = VK_NULL_HANDLE;
         uint32_t subpass = 0;
     };
     

@@ -34,7 +34,7 @@ namespace kate{
             }
             float getAspectRatio()const{return appSwapChain->extentAspectRatio();}
             int getFrameIndex() const{
-                assert(isFrameStarted && "Cannot get frae when frame not in proggress");
+                assert(isFrameStarted && "Cannot get frame when frame not in progress");
                 return currentFrameIndex;
             }
         private:

@@ -1,6 +1,9 @@
-#include <first_app.hpp>
+
 #include <kate_camera.hpp>
-#include <simple_render_system.hpp>
+#include <first_app.hpp>
+#include <systems/simple_render_system.hpp>
+#include <systems/point_light_system.hpp>
+
 #include "input/keyboard_input.hpp"
 #include <kate_buffer.hpp>
 
@@ -12,6 +15,8 @@
 #include <glm/gtc/constants.hpp>
 #include <glm/glm.hpp>
 //std libs
+#define _USE_MATH_DEFINES
+#include <cmath>
 
 #include <array>
 #include <chrono>
@@ -24,7 +29,8 @@ const float pi2 = 6.28f;
 
 namespace kate{
     struct GlobalUbo{
-        glm::mat4 projectionView{1.f};
+        glm::mat4 projection{1.f};
+        glm::mat4 view{1.f};
         glm::vec4 ambientLightColor{1.f,1.f,1.f,.02f}; // Ambient light color, white in this case {r,g,b,intensity}
         glm::vec3 lightPositition{-1.f}; // Light position in world space {x,y,z}
         alignas(16) glm::vec4 lightColor{1.f,1.f,1.f,16.f}; // Light color {r,g,b,intensity}
@@ -86,6 +92,12 @@ namespace kate{
             app_Device, 
             appRenderer->getSwapChainRenderPass(),
             globalSetLayout->getDescriptorSetLayout()}; // Create the render system
+
+        PointLightSystem pointLightSystem{
+            app_Device, 
+            appRenderer->getSwapChainRenderPass(),
+            globalSetLayout->getDescriptorSetLayout()}; // Create the render system
+
         KATECamera camera{};
         //camera.setViewTarget(glm::vec3(-1.f,-1.f,1.f),glm::vec3(0.f,0.f,2.5f)); //set camera angle and position}
         auto viewerObject = KATEGameObject::createGameObject();
@@ -112,22 +124,57 @@ namespace kate{
             frameTime = glm::min(frameTime,MAX_FRAME_TIME);
             glfwGetCursorPos(user_Window.getGLFWWindow(),&xpos,&ypos); 
 
-            ImGui::Begin("KATE Engine Debug");
-            ImGui::Text("Frame Time: %.3f ms",frameTime*1000.f);
-            ImGui::Text("FPS: %.3f",1.f/frameTime);
-            ImGui::TextColored(ImVec4(1.0f, 0.0f, 0.0f, 1.0f), "Mouse Position: ");
-            ImGui::Text("X: %.3f",xpos);
-            ImGui::Text("Y: %.3f",ypos);
-            ImGui::Text("Camera Position: ");
-            ImGui::Text("X: %.3f",viewerObject.transform.translation.x);
-            ImGui::Text("Y: %.3f",viewerObject.transform.translation.y);
-            ImGui::Text("Z: %.3f",viewerObject.transform.translation.z);
-            ImGui::Text("Camera Rotation: ");
-            ImGui::Text("X: %.3f",viewerObject.transform.rotation.x);
-            ImGui::Text("Y: %.3f",viewerObject.transform.rotation.y);
-            ImGui::Text("Rat Rotation: ");
-            ImGui::Text("Angle: %.3f",rad);
+            // Update FPS tracking
+            updateFPS(frameTime);
+
+            // Object Data Window
+            ImGui::Begin("Object Data");
+            ImGui::Text("Rat Data:");
+            ImGui::Text("Position: (%.3f, %.3f, %.3f)", 
+                gameObjects.begin()->second.transform.translation.x,
+                gameObjects.begin()->second.transform.translation.y,
+                gameObjects.begin()->second.transform.translation.z);
+            ImGui::Text("Rotation Angle: %.3f", rad);
+            ImGui::Text("Scale: (%.3f, %.3f, %.3f)", 
+                gameObjects.begin()->second.transform.scale.x,
+                gameObjects.begin()->second.transform.scale.y,
+                gameObjects.begin()->second.transform.scale.z);
+            
+            ImGui::Separator();
+            
+            ImGui::Text("Floor Data:");
+            auto floorIt = std::next(gameObjects.begin());
+            if (floorIt != gameObjects.end()) {
+                ImGui::Text("Position: (%.3f, %.3f, %.3f)", 
+                    floorIt->second.transform.translation.x,
+                    floorIt->second.transform.translation.y,
+                    floorIt->second.transform.translation.z);
+                ImGui::Text("Scale: (%.3f, %.3f, %.3f)", 
+                    floorIt->second.transform.scale.x,
+                    floorIt->second.transform.scale.y,
+                    floorIt->second.transform.scale.z);
+            }
             ImGui::End();
+
+            // Mouse and Camera Data Window
+            ImGui::Begin("Mouse & Camera Data");
+            ImGui::TextColored(ImVec4(1.0f, 0.0f, 0.0f, 1.0f), "Mouse Position: ");
+            ImGui::Text("X: %.3f", xpos);
+            ImGui::Text("Y: %.3f", ypos);
+            
+            ImGui::Separator();
+            
+            ImGui::Text("Camera Position: ");
+            ImGui::Text("X: %.3f", viewerObject.transform.translation.x);
+            ImGui::Text("Y: %.3f", viewerObject.transform.translation.y);
+            ImGui::Text("Z: %.3f", viewerObject.transform.translation.z);
+            ImGui::Text("Camera Rotation: ");
+            ImGui::Text("X: %.3f", viewerObject.transform.rotation.x);
+            ImGui::Text("Y: %.3f", viewerObject.transform.rotation.y);
+            ImGui::End();
+
+            // Render the new FPS statistics window
+            renderFPSWindow();
             
             
             cameraController.moveInPlaneXZ(user_Window.getGLFWWindow(),frameTime,viewerObject);
@@ -147,23 +194,24 @@ namespace kate{
                     gameObjects 
                 };
                 GlobalUbo ubo = {};
-                ubo.projectionView = camera.getProjection() * camera.getView();
+                ubo.projection = camera.getProjection();
+                ubo.view  =  camera.getView();
                 uboBuffers[frameIndex]->writeToBuffer(&ubo, sizeof(ubo));//test
                 uboBuffers[frameIndex]->flush();
 
                 appRenderer->beginSwapChainRenderPass(commandBuffer); // begin render pass
 
                 simpleRenderSystem.renderGameObjects(frameInfo); // render game objects
+                pointLightSystem.render(frameInfo); // render point lights
                 imguiManager->render(commandBuffer); // render imgui
 
                 appRenderer->endSwapChainRenderPass(commandBuffer); // end render pass
 
                 appRenderer->endFrame(); // end frame
-
             }
-
+            // INCREIVLE, UNA RATA QUE GIRA EN CIRCULOS OMG!!1 
             gameObjects.at(0).transform.rotation = {0.f,glm::pi<float>()/2.f+rad,glm::pi<float>()};
-            float frecuency = 1.0f; // Frequency of the rotation in radians per second
+            float frecuency = 10.0f; // Frequency of the rotation in radians per second
             rad += frecuency * frameTime; // Scale increment by frame time
             if (rad >= pi2) {
                 rad -= pi2;
@@ -198,15 +246,295 @@ namespace kate{
             rat.transform.rotation = {0.f,glm::pi<float>()/2.f,glm::pi<float>()};
             rat.transform.scale = glm::vec3(0.5f);
 
-            gameObjects.emplace(rat.getId(),std::move(rat));
-            gameObjects.emplace(floor.getId(),std::move(floor));
-            std::cout<<"rat id: "<<rat.getId()<<"\n";
-            std::cout<<"floor id: "<<floor.getId()<<"\n";
+            auto ratId = rat.getId();
+            auto floorId = floor.getId();
+            
+            gameObjects.emplace(ratId, std::move(rat));
+            gameObjects.emplace(floorId, std::move(floor));
+            
+            std::cout<<"rat id: "<<ratId<<"\n";
+            std::cout<<"floor id: "<<floorId<<"\n";
 
-            //std::cout<<rat.getId();
-            std::cout<<"rat loaded with "<<gameObjects.at(0).model->getnumberOfVertices()<<" vertices \n";
-            std::cout<<"cube loaded with "<<gameObjects.at(1).model->getnumberOfVertices()<<" vertices \n";
+            // Safe access using the actual IDs instead of hardcoded indices
+            auto ratIt = gameObjects.find(ratId);
+            if (ratIt != gameObjects.end() && ratIt->second.model) {
+                std::cout<<"rat loaded with "<<ratIt->second.model->getnumberOfVertices()<<" vertices \n";
+            }
+            auto floorIt = gameObjects.find(floorId);
+            if (floorIt != gameObjects.end() && floorIt->second.model) {
+                std::cout<<"floor loaded with "<<floorIt->second.model->getnumberOfVertices()<<" vertices \n";
+            }
 
         }
+
+    void FirstApp::updateFPS(float frameTime) {
+        auto now = std::chrono::steady_clock::now();
+        currentFPS = (frameTime > 0.0f) ? (1.0f / frameTime) : 0.0f;
+        
+        // Add current FPS to history
+        fpsHistory.push_back({currentFPS, now});
+        
+        // Add to last 20 frames for ff distribution
+        last20Frames.push_back(currentFPS);
+        if (last20Frames.size() > MAX_FRAME_SAMPLES) {
+            last20Frames.pop_front();
+        }
+        
+        // Remove old entries (older than 20 seconds)
+        auto cutoffTime = now - std::chrono::seconds(static_cast<int>(FPS_WINDOW_SECONDS));
+        while (!fpsHistory.empty() && fpsHistory.front().timestamp < cutoffTime) {
+            fpsHistory.pop_front();
+        }
+        
+        // Calculate statistics
+        if (!fpsHistory.empty()) {
+            float sum = 0.0f;
+            minFPS = std::numeric_limits<float>::max();
+            maxFPS = 0.0f;
+            
+            for (const auto& data : fpsHistory) {
+                sum += data.fps;
+                minFPS = std::min(minFPS, data.fps);
+                maxFPS = std::max(maxFPS, data.fps);
+            }
+            
+            averageFPS = sum / static_cast<float>(fpsHistory.size());
+        } else {
+            averageFPS = 0.0f;
+            minFPS = 0.0f;
+            maxFPS = 0.0f;
+        }
+        
+        // Calculate Gaussian distribution for last 20 frames
+        calculateGaussianDistribution();
+        
+        // Calculate advanced statistics
+        calculateAdvancedStatistics();
+    }
+
+    void FirstApp::calculateGaussianDistribution() {
+        if (last20Frames.size() < 2) {
+            frameMean = 0.0f;
+            frameStdDev = 0.0f;
+            gaussianValues.clear();
+            return;
+        }
+        
+        // Calculate mean
+        float sum = 0.0f;
+        for (float fps : last20Frames) {
+            sum += fps;
+        }
+        frameMean = sum / static_cast<float>(last20Frames.size());
+        
+        // Calculate standard deviation
+        float variance = 0.0f;
+        for (float fps : last20Frames) {
+            variance += (fps - frameMean) * (fps - frameMean);
+        }
+        variance /= static_cast<float>(last20Frames.size());
+        frameStdDev = std::sqrt(variance);
+        
+        // Generate Gaussian curve values
+        gaussianValues.clear();
+        if (frameStdDev > 0.001f) { // Avoid division by zero
+            float minRange = frameMean - 3.0f * frameStdDev;
+            float maxRange = frameMean + 3.0f * frameStdDev;
+            const int numPoints = 100;
+            
+            for (int i = 0; i < numPoints; ++i) {
+                float x = minRange + (maxRange - minRange) * static_cast<float>(i) / static_cast<float>(numPoints - 1);
+                float y = gaussianFunction(x, frameMean, frameStdDev);
+                gaussianValues.push_back(y);
+            }
+        }
+    }
+
+    float FirstApp::gaussianFunction(float x, float mean, float stddev) {
+        if (stddev <= 0.001f) return 0.0f;
+        
+        const float PI = 3.14159265359f;
+        float exponent = -0.5f * ((x - mean) / stddev) * ((x - mean) / stddev);
+        return (1.0f / (stddev * std::sqrt(2.0f * PI))) * std::exp(exponent);
+    }
+
+    void FirstApp::calculateAdvancedStatistics() {
+        if (last20Frames.size() < 2) return;
+        
+        std::vector<float> sortedFrames(last20Frames.begin(), last20Frames.end());
+        
+        frameMedian = calculateMedian(sortedFrames);
+        frameMode = calculateMode(sortedFrames);
+        frame25thPercentile = calculatePercentile(sortedFrames, 25.0f);
+        frame75thPercentile = calculatePercentile(sortedFrames, 75.0f);
+        frame95thPercentile = calculatePercentile(sortedFrames, 95.0f);
+        frameSkewness = calculateSkewness(sortedFrames, frameMean, frameStdDev);
+        frameKurtosis = calculateKurtosis(sortedFrames, frameMean, frameStdDev);
+    }
+
+    float FirstApp::calculateMedian(std::vector<float>& data) {
+        if (data.empty()) return 0.0f;
+        
+        std::sort(data.begin(), data.end());
+        size_t size = data.size();
+        
+        if (size % 2 == 0) {
+            return (data[size/2 - 1] + data[size/2]) / 2.0f;
+        } else {
+            return data[size/2];
+        }
+    }
+
+    float FirstApp::calculateMode(const std::vector<float>& data) {
+        if (data.empty()) return 0.0f;
+        
+        std::map<int, int> freqMap;
+        for (float val : data) {
+            int roundedVal = static_cast<int>(std::round(val));
+            freqMap[roundedVal]++;
+        }
+        
+        int maxFreq = 0;
+        int mode = 0;
+        for (const auto& pair : freqMap) {
+            if (pair.second > maxFreq) {
+                maxFreq = pair.second;
+                mode = pair.first;
+            }
+        }
+        
+        return static_cast<float>(mode);
+    }
+
+    float FirstApp::calculatePercentile(std::vector<float>& data, float percentile) {
+        if (data.empty()) return 0.0f;
+        
+        std::sort(data.begin(), data.end());
+        float index = (percentile / 100.0f) * (data.size() - 1);
+        int lowerIndex = static_cast<int>(std::floor(index));
+        int upperIndex = static_cast<int>(std::ceil(index));
+        
+        if (lowerIndex == upperIndex) {
+            return data[lowerIndex];
+        }
+        
+        float weight = index - lowerIndex;
+        return data[lowerIndex] * (1.0f - weight) + data[upperIndex] * weight;
+    }
+
+    float FirstApp::calculateSkewness(const std::vector<float>& data, float mean, float stddev) {
+        if (data.size() < 3 || stddev <= 0.001f) return 0.0f;
+        
+        float sum = 0.0f;
+        for (float val : data) {
+            float deviation = (val - mean) / stddev;
+            sum += deviation * deviation * deviation;
+        }
+        
+        return sum / data.size();
+    }
+
+    float FirstApp::calculateKurtosis(const std::vector<float>& data, float mean, float stddev) {
+        if (data.size() < 4 || stddev <= 0.001f) return 0.0f;
+        
+        float sum = 0.0f;
+        for (float val : data) {
+            float deviation = (val - mean) / stddev;
+            sum += deviation * deviation * deviation * deviation;
+        }
+        
+        return (sum / data.size()) - 3.0f; // Excess kurtosis
+    }
+
+    void FirstApp::renderFPSWindow() {
+        ImGui::Begin("Last 20 Seconds Average FPS, Max FPS and Min FPS");
+        
+        ImGui::Text("FPS Statistics (Last 20 seconds)");
+        ImGui::Separator();
+        
+        ImGui::Text("Current FPS: %.1f", currentFPS);
+        ImGui::Text("Average FPS: %.1f", averageFPS);
+        ImGui::Text("Maximum FPS: %.1f", maxFPS);
+        ImGui::Text("Minimum FPS: %.1f", minFPS);
+        
+        ImGui::Separator();
+        ImGui::Text("Sample Count: %zu", fpsHistory.size());
+        
+        // FPS history graph
+        if (!fpsHistory.empty()) {
+            std::vector<float> fpsValues;
+            fpsValues.reserve(fpsHistory.size());
+            for (const auto& data : fpsHistory) {
+                fpsValues.push_back(data.fps);
+            }
+            
+            ImGui::PlotLines("FPS History", fpsValues.data(), static_cast<int>(fpsValues.size()), 
+                           0, nullptr, 0.0f, maxFPS * 1.1f, ImVec2(0, 80));
+        }
+        
+        ImGui::Separator();
+        
+        // Last 20 frames statistics and Gaussian distribution
+        ImGui::Text("Last 20 Frames Analysis");
+        ImGui::Text("Sample Count: %zu", last20Frames.size());
+        if (last20Frames.size() >= 2) {
+            ImGui::Text("Mean FPS: %.2f", frameMean);
+            ImGui::Text("Standard Deviation: %.2f", frameStdDev);
+            
+            // Advanced statistical analysis
+            ImGui::Separator();
+            ImGui::Text("Statistical Analysis (Last 20 frames):");
+            
+            ImGui::Columns(2, "StatsColumns", false);
+            
+            ImGui::Text("Median: %.2f fps", frameMedian);
+            ImGui::Text("Mode: %.2f fps", frameMode);
+            ImGui::Text("25th Percentile: %.2f fps", frame25thPercentile);
+            
+            ImGui::NextColumn();
+            
+            ImGui::Text("75th Percentile: %.2f fps", frame75thPercentile);
+            ImGui::Text("95th Percentile: %.2f fps", frame95thPercentile);
+            ImGui::Text("Skewness: %.3f", frameSkewness);
+            ImGui::Text("Kurtosis: %.3f", frameKurtosis);
+            
+            ImGui::Columns(1);
+            
+            // Interpretation of skewness and kurtosis
+            ImGui::Separator();
+            ImGui::TextColored(ImVec4(0.7f, 0.7f, 0.7f, 1.0f), "Interpretation:");
+            if (frameSkewness > 0.1f) {
+                ImGui::TextColored(ImVec4(1.0f, 0.8f, 0.0f, 1.0f), "→ Positive skew: Some high frame spikes");
+            } else if (frameSkewness < -0.1f) {
+                ImGui::TextColored(ImVec4(1.0f, 0.8f, 0.0f, 1.0f), "→ Negative skew: Some low frame drops");
+            } else {
+                ImGui::TextColored(ImVec4(0.0f, 1.0f, 0.0f, 1.0f), "→ Symmetric distribution");
+            }
+            
+            if (frameKurtosis > 0.5f) {
+                ImGui::TextColored(ImVec4(1.0f, 0.5f, 0.0f, 1.0f), "→ High kurtosis: Peaked, unstable FPS");
+            } else if (frameKurtosis < -0.5f) {
+                ImGui::TextColored(ImVec4(0.0f, 0.8f, 1.0f, 1.0f), "→ Low kurtosis: Flat, stable FPS");
+            } else {
+                ImGui::TextColored(ImVec4(0.0f, 1.0f, 0.0f, 1.0f), "→ Normal distribution shape");
+            }
+            
+            // Show actual frame values (collapsible)
+            if (ImGui::CollapsingHeader("Frame Values")) {
+                ImGui::Text("Individual frame FPS values:");
+                for (size_t i = 0; i < last20Frames.size(); ++i) {
+                    if (i > 0 && i % 5 == 0) ImGui::NewLine();
+                    ImGui::SameLine();
+                    ImGui::Text("%.1f", last20Frames[i]);
+                }
+                ImGui::NewLine();
+            }
+            
+        } else {
+            ImGui::Text("Need at least 2 frames for analysis");
+        }
+        
+        ImGui::End();
+    }
 
 }

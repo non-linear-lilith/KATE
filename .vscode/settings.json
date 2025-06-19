@@ -73,7 +73,8 @@
         "coroutine": "cpp",
         "stop_token": "cpp",
         "thread": "cpp",
-        "cassert": "cpp"
+        "cassert": "cpp",
+        "deque": "cpp"
     },
 
 "C_Cpp.default.includePath": [

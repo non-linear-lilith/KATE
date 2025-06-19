@@ -36,9 +36,9 @@ namespace kate {
     }
     swapChainImageViews.clear();
 
-    if (swapChain != nullptr) {
+    if (swapChain != VK_NULL_HANDLE) {
       vkDestroySwapchainKHR(device.device(), swapChain, nullptr);
-      swapChain = nullptr;
+      swapChain = VK_NULL_HANDLE;
     }
 
     for (int i = 0; i < depthImages.size(); i++) {

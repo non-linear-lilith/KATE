@@ -1,0 +1,23 @@
+COMMIT LOG - KATE Vulkan Project
+
+Commit d0f62bb (June 3, 2025) - "Tutorial 23 y controles para mover rata"
+- Enhanced keyboard input system with new movement controls
+- Updated camera system (kate_camera.hpp)
+- Modified main application logic (first_app.cpp)
+- Extended keyboard input functionality with 19 new lines of code
+- Added 6 new function declarations to keyboard input header
+- Total: 28 additions, 4 deletions across 4 files
+
+OPTIMIZATION ANALYSIS (June 14, 2025) - KATE Vulkan Project
+## Performance Optimizations
+1. Frame Time Calculation (src/first_app.cpp:119) - Using std::chrono::high_resolution_clock every frame is expensive
+2. Hard-coded Game Object Access (src/first_app.cpp:143, 175) - gameObjects.at(0) creates unnecessary map lookups
+3. ImGui Debug Window (src/first_app.cpp:124-139) - Running ImGui debug info every frame impacts performance
+
+## Architecture Improvements  
+4. Magic Numbers (src/first_app.cpp:25, 176) - Replace constants with configurable values
+5. CMake Issues (CMakeLists.txt:22, 72) - Fix path inconsistencies and hardcoded Windows libs
+
+## Memory Management
+6. UBO Buffer Recreation (src/first_app.cpp:48-58) - Consider object pooling for buffers
+7. Model Loading (src/first_app.cpp:198-199) - Models loaded synchronously, consider async loading
