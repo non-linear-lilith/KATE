@@ -1,5 +1,20 @@
 COMMIT LOG - KATE Vulkan Project
 
+Commit 0b5fee7 (June 19, 2025) - "File reorganization, added linux building script, and minor updates to shaders"
+- Major project restructuring and cross-platform support implementation
+- Added Linux build system: Linux_Build.sh (271 lines) and Linux_Shaders.sh (204 lines)
+- Added Windows shader compilation: Windows_Shaders.bat (27 lines)
+- Created envLinux.cmake for Linux environment configuration (37 lines)
+- NEW FEATURES: Point light system with dedicated shaders (point_light.frag/vert + compiled .spv)
+- Reorganized render systems: moved simple_render_system to systems/ directory
+- Updated all 3D models (cube, vase, rat, quad) with geometry improvements
+- Extensive external library updates: GLFW and GLM completely refreshed
+- Enhanced build configuration: CMakeLists.txt major updates (232 line changes)
+- Cross-platform development setup: VSCode configs, gitignore improvements
+- Documentation updates: README, TODO, useful links
+- Total scope: 458+ files changed with massive line count modifications
+- This represents a major version upgrade preparing for production deployment
+
 Commit d0f62bb (June 3, 2025) - "Tutorial 23 y controles para mover rata"
 - Enhanced keyboard input system with new movement controls
 - Updated camera system (kate_camera.hpp)
